@@ -2,6 +2,9 @@
 #include "rt2_assignment1/Command.h"
 #include "rt2_assignment1/Position.h"
 #include "rt2_assignment1/RandomPosition.h"
+#include <rt2_assignment1/MotionAction.h>
+#include <actionlib/client/simple_action_client.h>
+#include <actionlib/client/terminal_state.h>
 
 bool start = false;
 
@@ -23,7 +26,8 @@ int main(int argc, char **argv)
    ros::ServiceServer service= n.advertiseService("/user_interface", user_interface);
    ros::ServiceClient client_rp = n.serviceClient<rt2_assignment1::RandomPosition>("/position_server");
    ros::ServiceClient client_p = n.serviceClient<rt2_assignment1::Position>("/go_to_point");
-   
+   actionlib::SimpleActionClient<rt2_assignment1::MotionAction> ac("/reaching_goal", true);
+
    rt2_assignment1::RandomPosition rp;
    rp.request.x_max = 5.0;
    rp.request.x_min = -5.0;
@@ -41,6 +45,24 @@ int main(int argc, char **argv)
    		std::cout << "\nGoing to the position: x= " << p.request.x << " y= " <<p.request.y << " theta = " <<p.request.theta << std::endl;
    		client_p.call(p);
    		std::cout << "Position reached" << std::endl;
+        
+        rt2_assignment1::MotionGoal goal;
+        //we'll send a goal to move the robot
+        goal.target_pose.header.frame_id = "base_link";
+        goal.target_pose.header.stamp = ros::Time::now();
+
+        goal.target_pose.pose.position.x = p.request.x;
+        goal.target_pose.pose.position.y = p.request.y;
+        goal.target_pose.pose.orientation.w = p.request.theta;
+        ROS_INFO("Sending goal");
+        ac.sendGoal(goal);
+
+        ac.waitForResult();
+
+        if(ac.getState() == actionlib::SimpleClientGoalState::SUCCEEDED)
+            ROS_INFO("Hooray, target reached!");
+        else
+            ROS_INFO("The base failed to reach the target for some reason");
    	}
    }
    return 0;
