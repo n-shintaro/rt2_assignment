@@ -34,26 +34,23 @@ int main(int argc, char **argv)
    rp.request.y_max = 5.0;
    rp.request.y_min = -5.0;
    rt2_assignment1::Position p;
-   
+
    while(ros::ok()){
    	ros::spinOnce();
    	if (start){
-   		client_rp.call(rp);
-   		p.request.x = rp.response.x;
-   		p.request.y = rp.response.y;
-   		p.request.theta = rp.response.theta;
-   		std::cout << "\nGoing to the position: x= " << p.request.x << " y= " <<p.request.y << " theta = " <<p.request.theta << std::endl;
-   		client_p.call(p);
-   		std::cout << "Position reached" << std::endl;
+        client_rp.call(rp);
+        p.request.x = rp.response.x;
+        p.request.y = rp.response.y;
+        p.request.theta = rp.response.theta;
         
+        std::cout << "\nGoing to the position: x= " << p.request.x << " y= " <<p.request.y << " theta = " <<p.request.theta << std::endl;
         rt2_assignment1::MotionGoal goal;
-        //we'll send a goal to move the robot
-        goal.target_pose.header.frame_id = "base_link";
-        goal.target_pose.header.stamp = ros::Time::now();
 
-        goal.target_pose.pose.position.x = p.request.x;
-        goal.target_pose.pose.position.y = p.request.y;
-        goal.target_pose.pose.orientation.w = p.request.theta;
+        // client_p.call(p);
+        std::cout << "Position reached" << std::endl;
+        goal.actual_target.x = p.request.x;
+        goal.actual_target.y = p.request.y;
+        goal.actual_target.theta = p.request.theta;
         ROS_INFO("Sending goal");
         ac.sendGoal(goal);
 

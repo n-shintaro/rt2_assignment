@@ -2,10 +2,10 @@
 
 
 import rospy
-from geometry_msgs.msg import Twist, Point
+from geometry_msgs.msg import Twist, Point, Pose,Pose2D
 from nav_msgs.msg import Odometry
 from tf import transformations
-from rt2_assignment1.srv import Possition
+from rt2_assignment1.srv import Position
 import math
 import actionlib
 import actionlib.msg
@@ -15,6 +15,7 @@ import rt2_assignment1.msg
 position_ = Point()
 yaw_ = 0
 position_ = 0
+pose_ = Pose()
 state_ = 0
 pub_ = None
 
@@ -36,10 +37,12 @@ act_s = None
 
 def clbk_odom(msg):
     global position_
+    global pose_
     global yaw_
 
     # position
     position_ = msg.pose.pose.position
+    pose_ = msg.pose.pose
 
     # yaw
     quaternion = (
@@ -127,54 +130,54 @@ def done():
     twist_msg.angular.z = 0
     pub_.publish(twist_msg)
     
-def go_to_point(req):
-    global act_s
-    desired_position = Point()
-    desired_position.x = req.x
-    desired_position.y = req.y
-    des_yaw = req.theta
-    change_state(0)
+def go_to_point(goal):
 
+    desired_position = Point()
+    desired_position.x = goal.actual_target.x
+    desired_position.y =  goal.actual_target.y
+    des_yaw = goal.actual_target.theta
+    change_state(0)
+    # create messages that are used to publish feedback/result
     feedback = rt2_assignment1.msg.MotionFeedback()
     result = rt2_assignment1.msg.MotionResult()
-
+    
     while True:
         if act_s.is_preempt_requested():
             rospy.loginfo('Goal was preempted')
             act_s.set_preempted()
             success = False
             break
-    	elif state_ == 0:
+        elif state_ == 0:
             feedback.stat = "Fixing the yaw"
             feedback.actual_pose = pose_
             act_s.publish_feedback(feedback)
-    		fix_yaw(desired_position)
-    	elif state_ == 1:
+            fix_yaw(desired_position)
+        elif state_ == 1:
             feedback.stat = "Go straight ahead"
             feedback.actual_pose = pose_
             act_s.publish_feedback(feedback)
-    		go_straight_ahead(desired_position)
-    	elif state_ == 2:
+            go_straight_ahead(desired_position)
+        elif state_ == 2:
             feedback.stat = "fix the final state!"
             feedback.actual_pose = pose_
             act_s.publish_feedback(feedback)
-    		fix_final_yaw(des_yaw)
-    	elif state_ == 3:
+            fix_final_yaw(des_yaw)
+        elif state_ == 3:
             feedback.stat = "Target reached!"
             feedback.actual_pose = pose_
-            act_s.publish_feedback(feedback)
-    		done()
-    		break
+            done()
+            break
     return True
+
 
 def main():
     global pub_, act_s
     rospy.init_node('go_to_point')
     pub_ = rospy.Publisher('/cmd_vel', Twist, queue_size=1)
     sub_odom = rospy.Subscriber('/odom', Odometry, clbk_odom)
-    service = rospy.Service('/go_to_point', Position, go_to_point)
+    # service = rospy.Service('/go_to_point', Position, go_to_point)
     act_s = actionlib.SimpleActionServer(
-        '/reaching_goal', rt2_assignment1.msg.MotionAction, motion, auto_start=False)
+        '/reaching_goal', rt2_assignment1.msg.MotionAction, go_to_point, auto_start=False)
     act_s.start()
     rospy.spin()
 
