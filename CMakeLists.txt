@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.5)
-project(rt2_assignment1_ros2)
+project(rt2_assignment1)
 
 # Default to C99
 if(NOT CMAKE_C_STANDARD)
@@ -25,10 +25,14 @@ add_library(FSM_component SHARED
   src/state_machine.cpp)
 
 rclcpp_components_register_node(FSM_component
-  PLUGIN "my_composition_package::MinimalPublisher"
+  PLUGIN "rt2_assignment1::RandomPositionServer"
   EXECUTABLE comp_FSM)
 
 ament_target_dependencies(FSM_component rclcpp rclcpp_components std_msgs)
+
+install(
+FILES my_mapping_rules.yaml
+DESTINATION share/${PROJECT_NAME})
 
 install(TARGETS
 FSM_component
