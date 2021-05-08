@@ -20,15 +20,22 @@ find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(std_msgs REQUIRED)
 find_package(rclcpp_components REQUIRED)
+find_package(rosidl_default_generators REQUIRED)
 
 add_library(FSM_component SHARED
   src/state_machine.cpp)
+
+rosidl_generate_interfaces(${PROJECT_NAME}
+"srv/Command.srv"
+"srv/Position.srv"
+"srv/RandomPosition.srv"
+)
 
 rclcpp_components_register_node(FSM_component
   PLUGIN "rt2_assignment1::RandomPositionServer"
   EXECUTABLE comp_FSM)
 
-ament_target_dependencies(FSM_component rclcpp rclcpp_components std_msgs)
+ament_target_dependencies(FSM_component rclcpp rclcpp_components)
 
 install(
 FILES my_mapping_rules.yaml

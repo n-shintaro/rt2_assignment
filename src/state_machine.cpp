@@ -1,8 +1,9 @@
+#include "rt2_assignment1/srv/command.hpp"
+#include "rt2_assignment1/srv/position.hpp"
+#include "rt2_assignment1/srv/randomposition.hpp"
 #include "rclcpp/rclcpp.hpp"
 #include "rclcpp_components/register_node_macro.hpp"
-#include "rt2_assignment1/RandomPosition.h"
-#include "rt2_assignment1/Position.h"
-#include "rt2_assignment1/Command.h"
+
 
 bool start = false;
 using RandomPosition = rt2_assignment1::RandomPosition;
@@ -50,7 +51,15 @@ class StateMachine : public rclcpp::Node
         
     {
         (void)request_header;
+        if (req.command == "start"){
+            start = true;
+        }
+        else {
+            start = false;
+        }
+        return true;
     }
+    // rclcpp::Service<AddTwoInts>::SharedPtr service_;
 };
 }
 
