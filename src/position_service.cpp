@@ -1,6 +1,6 @@
 #include "rclcpp/rclcpp.hpp"
 #include "rclcpp_components/register_node_macro.hpp"
-#include "rt2_assignment1/RandomPosition.h"
+#include "rt2_assignment1/srv/random_position.hpp"
 
 using RandomPosition = rt2_assignment1::srv::RandomPosition;
 using std::placeholders::_1;
