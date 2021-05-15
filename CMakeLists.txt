@@ -18,57 +18,57 @@ endif()
 # find dependencies
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
-find_package(rosidl_default_generators REQUIRED)
+find_package(std_msgs REQUIRED)
 find_package(rclcpp_components REQUIRED)
-
-
-
-add_library(state_component SHARED
-  src/state_machine.cpp)
-
-add_library(position_service_component SHARED 
-  src/position_service.cpp)
-
-rclcpp_components_register_node(state_component
-  PLUGIN "rt2_assignment1::RandomPositionServer"
-  EXECUTABLE comp_state)
-
-rclcpp_components_register_node(position_service_component
-  PLUGIN "rt2_assignment1::PositionServer" 
-  EXECUTABLE comp_server)
-
-ament_target_dependencies(state_component rclcpp rclcpp_components)
-
-ament_target_dependencies(position_service_component rclcpp rclcpp_components)
-
-install(TARGETS
-state_component
-comp_state
-position_service_component
-comp_server
-DESTINATION lib/${PROJECT_NAME}
-LIBRARY DESTINATION lib)
-
-
-
-
+find_package(rosidl_default_generators REQUIRED)
 
 rosidl_generate_interfaces(${PROJECT_NAME}
-  "srv/Command.srv"
-  "srv/Position.srv"
-  "srv/RandomPosition.srv"
+	"srv/Command.srv"
+	"srv/RandomPosition.srv"
+	"srv/Position.srv"
+	DEPENDENCIES std_msgs
 )
 
+add_library(random_service SHARED
+  src/position_service.cpp)
 
+#add_library(fsm_component SHARED
+#  src/state_machine.cpp)
+  
+rosidl_target_interfaces(random_service
+	${PROJECT_NAME} "rosidl_typesupport_cpp")
 
+#rosidl_target_interfaces(fsm_component
+#	${PROJECT_NAME} "rosidl_typesupport_cpp")
+  
+rclcpp_components_register_node(random_service
+  PLUGIN "rt2_assignment1::StateMachine"
+  EXECUTABLE position_service) 
+
+#rclcpp_components_register_node(fsm_component
+#  PLUGIN "rt2_assignment1::FSM"
+#  EXECUTABLE comp_FSM)
+
+# The executable can be run as standalone node while the "random_service" is the component
+  
+ament_target_dependencies(random_service rclcpp rclcpp_components std_msgs)
+#ament_target_dependencies(fsm_component rclcpp rclcpp_components std_msgs)
+
+install(TARGETS
+  random_service
+  DESTINATION lib/${PROJECT_NAME}
+  LIBRARY DESTINATION lib) #This lib has to be added for the components only
+  
 install(
-FILES my_mapping_rules.yaml
-DESTINATION share/${PROJECT_NAME})
-
+	FILES rt2_mapping.yaml
+	DESTINATION share/${PROJECT_NAME}
+)
+  
 install(
-    DIRECTORY launch
-    DESTINATION share/${PROJECT_NAME}
-  )
+  DIRECTORY launch
+  DESTINATION share/${PROJECT_NAME}
+)
+
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)

@@ -1,14 +1,9 @@
-#include <memory>
-#include <chrono>
-#include <cinttypes>
-#include <memory>
-#include <cstdlib>
-
-#include "rclcpp/rclcpp.hpp"
 #include "rt2_assignment1/srv/command.hpp"
 #include "rt2_assignment1/srv/position.hpp"
 #include "rt2_assignment1/srv/random_position.hpp"
+#include "rclcpp/rclcpp.hpp"
 #include "rclcpp_components/register_node_macro.hpp"
+
 
 bool start = false;
 using RandomPosition = rt2_assignment1::RandomPosition;
