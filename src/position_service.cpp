@@ -8,7 +8,7 @@ using std::placeholders::_2;
 using std::placeholders::_3;
 
 namespace rt2_assignment1{
-    class MinimalServer : public rclcpp::Node
+    class RandomPositionServer : public rclcpp::Node
 {
 public:
   RandomPositionServer(const rclcpp::NodeOptions & options)
@@ -20,15 +20,19 @@ public:
 
 private:
 
-  void myrandom(
+  double randMToN(double M, double N)
+{     return M + (rand() / ( RAND_MAX / (N-M) ) ) ; }
+
+  bool myrandom(
   const std::shared_ptr<rmw_request_id_t> request_header,
   const std::shared_ptr<RandomPosition::Request> req,
   const std::shared_ptr<RandomPosition::Response> res)
   {
   (void)request_header;
-  res.x = randMToN(req.x_min, req.x_max);
-  res.y = randMToN(req.y_min, req.y_max);
-  res.theta = randMToN(-3.14, 3.14);
+  res->x = randMToN(req->x_min, req->x_max);
+  res->y = randMToN(req->y_min, req->y_max);
+  res->theta = randMToN(-3.14, 3.14);
+  return true;
 }
   rclcpp::Service<RandomPosition>::SharedPtr service_;
 };
