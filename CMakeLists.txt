@@ -32,30 +32,31 @@ rosidl_generate_interfaces(${PROJECT_NAME}
 add_library(random_service SHARED
   src/position_service.cpp)
 
-#add_library(fsm_component SHARED
-#  src/state_machine.cpp)
+add_library(fsm_component SHARED
+  src/state_machine.cpp)
   
 rosidl_target_interfaces(random_service
 	${PROJECT_NAME} "rosidl_typesupport_cpp")
 
-#rosidl_target_interfaces(fsm_component
-#	${PROJECT_NAME} "rosidl_typesupport_cpp")
+rosidl_target_interfaces(fsm_component
+	${PROJECT_NAME} "rosidl_typesupport_cpp")
   
 rclcpp_components_register_node(random_service
   PLUGIN "rt2_assignment1::StateMachine"
   EXECUTABLE position_service) 
 
-#rclcpp_components_register_node(fsm_component
-#  PLUGIN "rt2_assignment1::FSM"
-#  EXECUTABLE comp_FSM)
+rclcpp_components_register_node(fsm_component
+  PLUGIN "rt2_assignment1::FSM"
+  EXECUTABLE comp_FSM)
 
 # The executable can be run as standalone node while the "random_service" is the component
   
 ament_target_dependencies(random_service rclcpp rclcpp_components std_msgs)
-#ament_target_dependencies(fsm_component rclcpp rclcpp_components std_msgs)
+ament_target_dependencies(fsm_component rclcpp rclcpp_components std_msgs)
 
 install(TARGETS
   random_service
+  fsm_component
   DESTINATION lib/${PROJECT_NAME}
   LIBRARY DESTINATION lib) #This lib has to be added for the components only
   
