@@ -42,11 +42,11 @@ rosidl_target_interfaces(fsm_component
 	${PROJECT_NAME} "rosidl_typesupport_cpp")
   
 rclcpp_components_register_node(random_service
-  PLUGIN "rt2_assignment1::StateMachine"
+  PLUGIN "rt2_assignment1::RandomPositionServer"
   EXECUTABLE position_service) 
 
 rclcpp_components_register_node(fsm_component
-  PLUGIN "rt2_assignment1::FSM"
+  PLUGIN "rt2_assignment1::StateMachine"
   EXECUTABLE comp_FSM)
 
 # The executable can be run as standalone node while the "random_service" is the component

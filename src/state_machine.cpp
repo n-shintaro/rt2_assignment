@@ -1,3 +1,11 @@
+
+
+/**
+This file define state machine
+This compnent sends random position when the robot receives the user request.
+*/
+
+
 #include <memory>
 #include <chrono>
 #include <cinttypes>
@@ -20,11 +28,21 @@ using std::placeholders::_1;
 using std::placeholders::_2;
 using std::placeholders::_3;
 
+using namespace std::chrono_literals;
+
 namespace rt2_assignment1{
 class StateMachine : public rclcpp::Node
 {
     public:
-
+    /**
+    Constructor
+    Server : "user_interface"
+            callback function : user_interface
+    
+    Client :/position_server
+    
+    Client :/go_to_point
+    */
     StateMachine(const rclcpp::NodeOptions & options)
     : Node("state_machine", options)
     {
@@ -37,25 +55,42 @@ class StateMachine : public rclcpp::Node
     this->response_rp = std::make_shared<rt2_assignment1::srv::RandomPosition::Response>();
     this->request_p = std::make_shared<rt2_assignment1::srv::Position::Request>();
 
+    timer_ = this->create_wall_timer(
+          500ms, std::bind(&StateMachine::set_new_destination, this));
+
+    // max and min value of random position
     this->request_rp->x_max = 5.0;
     this->request_rp->x_min = -5.0;
     this->request_rp->y_max = 5.0;
     this->request_rp->y_min = -5.0;
 
-    if(start){
-        go_to_destination();
-    }
+    
     }
     private:
 
+    /**
+    This is the callback function to set
+    */
+    void set_new_destination(){
+        if(start){
+            go_to_destination();
+        }
+    }
+
+
+    /**
+    This is the function which sends the request 
+    to /go_to_point and set the destination of the robot
+    which is received via '/position_server'.
+    */
     void go_to_destination(){
+        // get the random position
         get_random_position();
 
-        this->request_p->x = response_rp->x;
-   		this->request_p->y = response_rp->y;
-   		this->request_p->theta = response_rp->theta;
-        
-        
+        // set the random position to send it to /go_to_point
+        this->request_p->x = this->response_rp->x;
+   		this->request_p->y = this->response_rp->y;
+   		this->request_p->theta = this->response_rp->theta; 
 
         RCLCPP_INFO(this->get_logger(), "Go to x=%f y=%f theta=%f",
         this->request_p->x, this->request_p->y, this->request_p->theta);
@@ -63,12 +98,19 @@ class StateMachine : public rclcpp::Node
         using ServiceResponseFuture =
         rclcpp::Client<Position>::SharedFuture;
 
+        // if the robot reaches the goal, 
         auto response_received_callback = [this](ServiceResponseFuture future) {
         RCLCPP_INFO(this->get_logger(), "Got result: [%" PRId64 "]", future.get());
         };
+        
+        // Send a request to the server (asynchronous)
         auto future_result = client_p->async_send_request(this->request_p, response_received_callback);
     }
 
+    /**
+    This is the callback function to change start flage to true when request from the user is "start"
+    which is received via '/position_server'.
+    */
     void user_interface(
         const std::shared_ptr<rmw_request_id_t> request_header,
         const std::shared_ptr<Command::Request> request,
@@ -86,6 +128,11 @@ class StateMachine : public rclcpp::Node
         response->ok=true;
     }
 
+
+    /**
+    This is the callback function 
+    to get the random position using service(/position_server)
+    */
     void get_random_position(){
         using ServiceResponseFuture =
         rclcpp::Client<RandomPosition>::SharedFuture;
