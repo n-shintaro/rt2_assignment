@@ -1,6 +1,9 @@
+#include <inttypes.h>
+#include <memory>
 #include "rclcpp/rclcpp.hpp"
 #include "rclcpp_components/register_node_macro.hpp"
 #include "rt2_assignment1/srv/random_position.hpp"
+
 
 using RandomPosition = rt2_assignment1::srv::RandomPosition;
 using std::placeholders::_1;
@@ -15,7 +18,9 @@ public:
   : Node("random_position_server", options)
   {
     service_ = this->create_service<RandomPosition>(
-      "position_server", std::bind(&RandomPositionServer::myrandom, this, _1, _2, _3));
+      "/position_server", std::bind(&RandomPositionServer::myrandom, this, _1, _2, _3));
+
+
   }
 
 private:
