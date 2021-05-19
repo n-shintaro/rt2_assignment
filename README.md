@@ -3,6 +3,6 @@
 The package contains the nodes and the simulation environment for controlling a mobile robot in the Gazebo simulation environment.
 To launch the node, please run:
 ```
-rosrun rt2_assignment1 sim.launch
+roslaunch rt2_assignment1 sim.launch
 ```
 
