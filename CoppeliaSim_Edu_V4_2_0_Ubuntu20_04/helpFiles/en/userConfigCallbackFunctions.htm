@@ -1,0 +1,117 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Strict//EN">
+<html>
+
+<head>
+<meta http-equiv="Content-Language" content="en-us">
+<title>User config callback functions</title>
+<link rel="stylesheet" type="text/css" href="../style.css">
+</head>
+
+<body>
+
+<div align="center">
+<table class=allEncompassingTable >
+ <tr>
+  <td >
+<p><a href="../index.html" TARGET="_top"><img src="images/homeImg.png"></a></p>
+
+
+
+<h1>User config callback functions</h1>
+
+<p>A <a href="customizationScripts.htm">customization script</a> that includes a user config callback function (which is one of many <a href="callbackFunctions.htm#systemCallbacks">system callback functions</a>), will display a configuration dialog icon, in the scene hierarchy:</p>
+<p align=center><img src="images/scriptSimParams1.jpg"></p>
+<p class=imageLabel>[Configuration dialog icon]</p>
+<br>
+
+
+<p> When double-cliked, the user config callback function is triggered. This can be used as a convenient way of displaying a <a href="customUserInterfaces.htm">custom user interface</a> to the user, that is specific to the <a href="objects.htm">object</a>/<a href="models.htm">model</a> the customization script is attached to. User data can be read and written to objects with <a href="regularApi/simReadCustomDataBlock.htm">sim.readCustomDataBlock</a>/<a href="regularApi/simWriteCustomDataBlock.htm">sim.writeCustomDataBlock</a> for instance:</p>
+
+<p align=center><img src="images/userConfigCallback.jpg"></p>
+<p class=imageLabel>[Custom configuration dialog]</p>
+<br>
+
+<pre class=lightRedBox>
+function sysCall_init()
+    modelHandle=sim.getObjectHandle(sim.handle_self)
+end
+
+function sysCall_userConfig()
+    local xml =[[&lt;ui title="Robot" closeable="true" modal="true" layout="form" on-close="customUiClosed"&gt;
+            &lt;label text="Max. velocity:" /&gt;
+            &lt;edit id="1" value="-" on-editing-finished="velocityChanged"/&gt;
+            &lt;label text="Max. acceleration:" /&gt;
+            &lt;edit id="2" value="-" on-editing-finished="accelerationChanged"/&gt;
+    &lt;/ui&gt;]]
+    local ui=simUI.create(xml)
+    local data=readData()
+    simUI.setEditValue(ui,1,tostring(data.maxVel))
+    simUI.setEditValue(ui,2,tostring(data.maxAccel))
+end
+
+function customUiClosed(ui)
+    simUI.destroy(ui)
+end
+
+function velocityChanged(ui,id,val)
+    local data=readData()
+    val=tonumber(val)
+    if val then
+        if val<0.1 then
+            val=0.1
+        end
+        if val>0.5 then
+            val=0.5 
+        end
+        data.maxVel=val
+    end
+    simUI.setEditValue(ui,id,tostring(data.maxVel))
+    writeData(data)
+end
+
+function accelerationChanged(ui,id,val)
+    local data=readData()
+    val=tonumber(val)
+    if val then
+        if val<0.01 then
+            val=0.01
+        end
+        if val>0.2 then
+            val=0.2 
+        end
+        data.maxAccel=val
+    end
+    simUI.setEditValue(ui,id,tostring(data.maxAccel))
+    writeData(data)
+end
+
+function readData()
+    local data=sim.readCustomDataBlock(modelHandle,'RobotParams')
+    if data then
+        data=sim.unpackTable(data)
+    else
+        data={}
+        data.maxVel=0.2
+        data.maxAccel=0.05
+    end
+    return data
+end
+
+function writeData(data)
+    sim.writeCustomDataBlock(modelHandle,'RobotParams',sim.packTable(data))
+end</pre>
+
+
+<br>
+<br>
+ </tr>
+ <tr>
+   <td > 
+ </tr>
+</table> 
+</div>  
+  
+  
+</body>
+
+</html>
