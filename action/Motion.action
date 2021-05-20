@@ -1,5 +1,9 @@
+# goal
 geometry_msgs/Pose2D actual_target
 ---
+# result
+bool reached
 ---
+# feedback
 geometry_msgs/Pose actual_pose
 string stat

@@ -12,6 +12,7 @@ find_package(catkin REQUIRED COMPONENTS
   rospy
   sensor_msgs
   std_msgs
+  message_generation
   actionlib
   actionlib_msgs
   roscpp
@@ -112,6 +113,8 @@ catkin_package(
 #  LIBRARIES rt2_assignment1
 #  CATKIN_DEPENDS roscpp rospy
 #  DEPENDS system_lib
+  CATKIN_DEPENDS roscpp rospy
+  DEPENDS actionlib_msgs actionlib
 )
 
 ###########

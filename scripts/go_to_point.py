@@ -131,7 +131,7 @@ def done():
     pub_.publish(twist_msg)
     
 def go_to_point(goal):
-
+    global act_s
     desired_position = Point()
     desired_position.x = goal.actual_target.x
     desired_position.y =  goal.actual_target.y
@@ -140,13 +140,20 @@ def go_to_point(goal):
     # create messages that are used to publish feedback/result
     feedback = rt2_assignment1.msg.MotionFeedback()
     result = rt2_assignment1.msg.MotionResult()
-    
-    while True:
+    finished_flag=False
+    success=True
+    while not rospy.is_shutdown() and not finished_flag:
+        # an action client to request that the current goal execution be cancelled
         if act_s.is_preempt_requested():
             rospy.loginfo('Goal was preempted')
+            # signals that the action has been preempted by user request
             act_s.set_preempted()
+            print('state='+str(state_))
             success = False
-            break
+            done()
+            change_state(-1)
+            finished_flag=True
+
         elif state_ == 0:
             feedback.stat = "Fixing the yaw"
             feedback.actual_pose = pose_
@@ -166,7 +173,12 @@ def go_to_point(goal):
             feedback.stat = "Target reached!"
             feedback.actual_pose = pose_
             done()
-            break
+            finished_flag=True
+
+    if success:
+        feedback.stat="the robot reaches the goal"
+        result.reached=success
+        act_s.set_succeeded(result)
     return True
 
 
@@ -177,7 +189,7 @@ def main():
     sub_odom = rospy.Subscriber('/odom', Odometry, clbk_odom)
     # service = rospy.Service('/go_to_point', Position, go_to_point)
     act_s = actionlib.SimpleActionServer(
-        '/reaching_goal', rt2_assignment1.msg.MotionAction, go_to_point, auto_start=False)
+        '/go_to_point', rt2_assignment1.msg.MotionAction, go_to_point, auto_start=False)
     act_s.start()
     rospy.spin()
 

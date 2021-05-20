@@ -6,16 +6,40 @@
 #include <actionlib/client/simple_action_client.h>
 #include <actionlib/client/terminal_state.h>
 
-bool start = false;
+bool start = false; // start becomes true when the use command start
 
+int mode=4;
+// mode=1: start
+// mode=2: reach the goal
+// mode=3 :interrupt goal
+// mode=4 : not to change
+
+/*
+    when the user request start, mode=1.
+    otherwise mode=3
+*/
 bool user_interface(rt2_assignment1::Command::Request &req, rt2_assignment1::Command::Response &res){
     if (req.command == "start"){
-    	start = true;
+    	mode = 1;
+      ROS_INFO("start");
     }
     else {
-    	start = false;
+    	mode=3;
+      ROS_INFO("stop");
     }
     return true;
+}
+
+void doneCllbck(const actionlib::SimpleClientGoalState& goal_state,
+                const rt2_assignment1::MotionResultConstPtr& result){
+  mode = 2; /* Goal reached state */
+}
+
+void activeCllbck(){return;}
+
+void feedbackCllbck(const rt2_assignment1::MotionFeedbackConstPtr& feedback){
+  //ROS_INFO("FEEDBACK: %s", feedback->status.c_str());
+  return;
 }
 
 
@@ -25,42 +49,67 @@ int main(int argc, char **argv)
    ros::NodeHandle n;
    ros::ServiceServer service= n.advertiseService("/user_interface", user_interface);
    ros::ServiceClient client_rp = n.serviceClient<rt2_assignment1::RandomPosition>("/position_server");
-   ros::ServiceClient client_p = n.serviceClient<rt2_assignment1::Position>("/go_to_point");
-   actionlib::SimpleActionClient<rt2_assignment1::MotionAction> ac("/reaching_goal", true);
+   // action client
+   actionlib::SimpleActionClient<rt2_assignment1::MotionAction> ac("/go_to_point", true);
 
    rt2_assignment1::RandomPosition rp;
+   // max and min of random position
    rp.request.x_max = 5.0;
    rp.request.x_min = -5.0;
    rp.request.y_max = 5.0;
    rp.request.y_min = -5.0;
-   rt2_assignment1::Position p;
+    while(!ac.waitForServer(ros::Duration(5.0))){ 
+     ROS_INFO("Waiting for the go_to_point action server to come up");
+   }
 
    while(ros::ok()){
    	ros::spinOnce();
-   	if (start){
-        client_rp.call(rp);
-        p.request.x = rp.response.x;
-        p.request.y = rp.response.y;
-        p.request.theta = rp.response.theta;
-        
-        std::cout << "\nGoing to the position: x= " << p.request.x << " y= " <<p.request.y << " theta = " <<p.request.theta << std::endl;
+    // std::cout << "\n mode= " << mode<<std::endl;
+   	if (mode==1){ // when user command start, send the random position as the goal to the robot
+        client_rp.call(rp); // get random position
+        //send the goal to the go_to_point
         rt2_assignment1::MotionGoal goal;
 
-        // client_p.call(p);
-        std::cout << "Position reached" << std::endl;
-        goal.actual_target.x = p.request.x;
-        goal.actual_target.y = p.request.y;
-        goal.actual_target.theta = p.request.theta;
+        goal.actual_target.x = rp.response.x;
+        goal.actual_target.y = rp.response.y;
+        goal.actual_target.theta = rp.response.theta;
+        std::cout << "\nGoing to the position: x= " << goal.actual_target.x << " y= " <<goal.actual_target.y << " theta = " <<goal.actual_target.theta << std::endl;
         ROS_INFO("Sending goal");
-        ac.sendGoal(goal);
-
-        ac.waitForResult();
-
-        if(ac.getState() == actionlib::SimpleClientGoalState::SUCCEEDED)
-            ROS_INFO("Hooray, target reached!");
-        else
-            ROS_INFO("The base failed to reach the target for some reason");
+        ac.sendGoal(goal, &doneCllbck, &activeCllbck, &feedbackCllbck);
+        mode=4;
+        break;
+        // else
+        //     ROS_INFO("The base failed to reach the target for some reason");
    	}
+    /*
+    when the user request stop, action is canceled.
+    */
+    else if(mode==3){
+        std::cout << "\n mode= " << mode<<std::endl;
+        ac.cancelGoal();
+        ROS_INFO("Goal is canceled!");
+        mode=4;
+        break;
+    }
+    /* action ended  when
+         - the robot reach the goal
+         - the action is preempted
+    */
+    else if(mode==2){
+        if(ac.getState() == actionlib::SimpleClientGoalState::SUCCEEDED){
+            ROS_INFO("Hooray, target reached!");
+            mode=1; //go to the next target
+        }
+        else if(ac.getState() == actionlib::SimpleClientGoalState::PREEMPTED){
+          ROS_DEBUG("Goal canceled");
+          mode = 4;
+        }
+        else{
+          ROS_DEBUG("Fail to reach the goal");
+          mode = 4;
+        }
+
+    }
    }
    return 0;
 }
