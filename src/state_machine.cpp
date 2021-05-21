@@ -31,18 +31,6 @@ bool user_interface(rt2_assignment1::Command::Request &req, rt2_assignment1::Com
     return true;
 }
 
-void doneCllbck(const actionlib::SimpleClientGoalState& goal_state,
-                const rt2_assignment1::MotionResultConstPtr& result){
-  mode = 2; /* Goal reached state */
-}
-
-void activeCllbck(){return;}
-
-void feedbackCllbck(const rt2_assignment1::MotionFeedbackConstPtr& feedback){
-  //ROS_INFO("FEEDBACK: %s", feedback->status.c_str());
-  return;
-}
-
 
 int main(int argc, char **argv)
 {
@@ -53,19 +41,19 @@ int main(int argc, char **argv)
    // action client
    actionlib::SimpleActionClient<rt2_assignment1::MotionAction> ac("/go_to_point", true);
 
+  // max and min of random position
    rt2_assignment1::RandomPosition rp;
-   // max and min of random position
    rp.request.x_max = 5.0;
    rp.request.x_min = -5.0;
    rp.request.y_max = 5.0;
    rp.request.y_min = -5.0;
-    while(!ac.waitForServer(ros::Duration(5.0))){ 
-     ROS_INFO("Waiting for the go_to_point action server to come up");
+    while(!ac.waitForServer(ros::Duration(5.0))){
+     ROS_INFO("Please wait for action server to come up");
    }
 
    while(ros::ok()){
    	ros::spinOnce();
-    // std::cout << "\n mode= " << mode<<std::endl;
+
    	if (mode==1){ // when user command start, send the random position as the goal to the robot
         client_rp.call(rp); // get random position
         //send the goal to the go_to_point
@@ -76,23 +64,14 @@ int main(int argc, char **argv)
         goal.actual_target.theta = rp.response.theta;
         std::cout << "\nGoing to the position: x= " << goal.actual_target.x << " y= " <<goal.actual_target.y << " theta = " <<goal.actual_target.theta << std::endl;
         ROS_INFO("Sending goal");
-        ac.sendGoal(goal, &doneCllbck, &activeCllbck, &feedbackCllbck);
+        ac.sendGoal(goal); //send the goal to the robot
         mode=4;
-        // else
-        //     ROS_INFO("The base failed to reach the target for some reason");
+
    	}
-    /*
-    when the user request stop, action is canceled.
-    */
-    else if(mode==3){
-        std::cout << "\n mode= " << mode<<std::endl;
-        ac.cancelGoal();
-        ROS_INFO("Goal is canceled!");
-        mode=4;
-    }
+
     /* action ended  when
          - the robot reach the goal
-         - the action is preempted
+         - the action is canceled
     */
     else if(mode==2){
         actionlib::SimpleClientGoalState goal_state = ac.getState();
@@ -101,14 +80,21 @@ int main(int argc, char **argv)
             mode=1; //go to the next target
         }
         else if(goal_state == actionlib::SimpleClientGoalState::PREEMPTED){
-          ROS_DEBUG("Goal canceled");
+          ROS_DEBUG("Goal is canceled");
           mode = 4;
         }
         else{
-          ROS_DEBUG("Fail to reach the goal");
+          ROS_DEBUG("can't reach the goal");
           mode = 4;
         }
-
+    }
+    /*
+    when the user request stop, action is canceled.
+    */
+    else if(mode==3){
+        ac.cancelGoal(); // goal is canceled
+        ROS_INFO("Goal is canceled!");
+        mode=4;
     }
    }
    return 0;
