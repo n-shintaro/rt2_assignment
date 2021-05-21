@@ -19,6 +19,7 @@ int mode=4;
     otherwise mode=3
 */
 bool user_interface(rt2_assignment1::Command::Request &req, rt2_assignment1::Command::Response &res){
+    ROS_INFO("user_interface");
     if (req.command == "start"){
     	mode = 1;
       ROS_INFO("start");
@@ -77,7 +78,6 @@ int main(int argc, char **argv)
         ROS_INFO("Sending goal");
         ac.sendGoal(goal, &doneCllbck, &activeCllbck, &feedbackCllbck);
         mode=4;
-        break;
         // else
         //     ROS_INFO("The base failed to reach the target for some reason");
    	}
@@ -89,18 +89,18 @@ int main(int argc, char **argv)
         ac.cancelGoal();
         ROS_INFO("Goal is canceled!");
         mode=4;
-        break;
     }
     /* action ended  when
          - the robot reach the goal
          - the action is preempted
     */
     else if(mode==2){
-        if(ac.getState() == actionlib::SimpleClientGoalState::SUCCEEDED){
+        actionlib::SimpleClientGoalState goal_state = ac.getState();
+        if(goal_state == actionlib::SimpleClientGoalState::SUCCEEDED){
             ROS_INFO("Hooray, target reached!");
             mode=1; //go to the next target
         }
-        else if(ac.getState() == actionlib::SimpleClientGoalState::PREEMPTED){
+        else if(goal_state == actionlib::SimpleClientGoalState::PREEMPTED){
           ROS_DEBUG("Goal canceled");
           mode = 4;
         }

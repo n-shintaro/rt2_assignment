@@ -137,6 +137,7 @@ def go_to_point(goal):
     desired_position.y =  goal.actual_target.y
     des_yaw = goal.actual_target.theta
     change_state(0)
+    rate = rospy.Rate(20)
     # create messages that are used to publish feedback/result
     feedback = rt2_assignment1.msg.MotionFeedback()
     result = rt2_assignment1.msg.MotionResult()
@@ -174,7 +175,8 @@ def go_to_point(goal):
             feedback.actual_pose = pose_
             done()
             finished_flag=True
-
+        act_s.publish_feedback(feedback)
+        rate.sleep()
     if success:
         feedback.stat="the robot reaches the goal"
         result.reached=success
