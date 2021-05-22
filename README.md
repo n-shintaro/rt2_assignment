@@ -25,11 +25,11 @@ his software is built on the Robotic Operating System ([ROS]), which needs to be
 Build catkin_workspace
 
 ```
-cd cakin_workspace
+cd ros_ws
 catkin_make
 ```
 
-launch go_to_point.py and user_interface.py with gazeb
+launch go_to_point.py and user_interface.py with gazebo
 
 ```
 launch rt2_assignment1 sim.launch
