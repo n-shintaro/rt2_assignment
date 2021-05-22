@@ -1,17 +1,6 @@
 # Research Track 2 - first assignment
 ## OverView
 
-This is the package to simulate the non-holonomic robot by using navigation stack on gazebo environment.
-
-The robot gets the user request, and the robot takes one of the following actions.
-
-1. move randomly in the environment, by choosing 1 out of 6 possible target positions:
-   [(-4,-3);(-4,2);(-4,7);(5,-7);(5,-3);(5,1)], implementing a random position service.
-2. directly ask the user of the next target position (checking that the position is one of the possible six)
-   and reach it
-3. start following the external walls
-4. stop in the last position
-
 ### Description of the content of the package
 
 - go_to_point.py
@@ -171,6 +160,11 @@ Vrep should be executed when the ROS master is already running
 
 ```
 roscore
+```
+
+
+
+```
 cd /install folder of Coppeliasim
 ./coppeliasim.sh
 ```
