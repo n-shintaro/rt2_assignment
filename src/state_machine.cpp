@@ -84,6 +84,11 @@ class StateMachine : public rclcpp::Node
     std::shared_ptr<RandomPosition::Request> request_rp;
     std::shared_ptr<rt2_assignment1::srv::RandomPosition::Response> response_rp;
     std::shared_ptr<Position::Request> request_p;
+
+    rclcpp::Service<Command>::SharedPtr service_;
+    rclcpp::Client<Position>::SharedPtr client_p; 
+    rclcpp::Client<RandomPosition>::SharedPtr client_rp;
+
     private:
 
     /**
@@ -92,7 +97,8 @@ class StateMachine : public rclcpp::Node
     void set_new_destination(){
         if(start && !moving){
             go_to_destination();
-            moving=true;
+            moving=true; // this is the parameter not to send the new destination 
+                        //before the robot does not reach the goal
         }
         else if(start && moving)
         {
@@ -108,6 +114,7 @@ class StateMachine : public rclcpp::Node
     }
 
 
+
     /**
     This is the function which sends the request 
     to /go_to_point and set the destination of the robot
@@ -116,21 +123,29 @@ class StateMachine : public rclcpp::Node
     void go_to_destination(){
         // get the random position
         get_random_position();
+        rclcpp::WallRate rate(1s);
+        rate.sleep();
 
         // set the random position to send it to /go_to_point
-        this->request_p->x = this->response_rp->x;
-   		this->request_p->y = this->response_rp->y;
-   		this->request_p->theta = this->response_rp->theta; 
+        request_p->x = response_rp->x;
+   		request_p->y = response_rp->y;
+   		request_p->theta = response_rp->theta;
 
         RCLCPP_INFO(this->get_logger(), "Go to x=%f y=%f theta=%f",
-        this->request_p->x, this->request_p->y, this->request_p->theta);
+        response_rp->x, response_rp->y, response_rp->theta);
 
         using ServiceResponseFuture =
         rclcpp::Client<Position>::SharedFuture;
 
-        // if the robot reaches the goal, 
+        // if the robot reaches the goal,
         auto response_received_callback = [this](ServiceResponseFuture future) {
-        RCLCPP_INFO(this->get_logger(), "Got result: [%" PRId64 "]", future.get());
+        RCLCPP_INFO(this->get_logger(), "reached the goal");
+        auto result_p = future.get();
+        if (result_p->ok)
+        {
+        moving = false;
+        }
+        
         };
         
         // Send a request to the server (asynchronous)
@@ -168,7 +183,7 @@ class StateMachine : public rclcpp::Node
         rclcpp::Client<RandomPosition>::SharedFuture;
 
         auto rp_received_callback = [this](ServiceResponseFuture future) {
-            RCLCPP_INFO(this->get_logger(), "Got result:  x=%f y=%f theta=%f", 
+            RCLCPP_INFO(this->get_logger(), "Got the random position:  x=%f y=%f theta=%f", 
             future.get()->x,future.get()->y,future.get()->theta);
             response_rp=future.get();
         };
@@ -180,13 +195,10 @@ class StateMachine : public rclcpp::Node
     bool start=false;
     bool moving=false;
 
-    rclcpp::Service<Command>::SharedPtr service_;
-    rclcpp::Client<Position>::SharedPtr client_p; 
-    rclcpp::Client<RandomPosition>::SharedPtr client_rp;
 
     
 
-    rclcpp::TimerBase::SharedPtr timer_;   
+    rclcpp::TimerBase::SharedPtr timer_;
 };
 }
 RCLCPP_COMPONENTS_REGISTER_NODE(rt2_assignment1::StateMachine) 

@@ -11,9 +11,16 @@ using std::placeholders::_2;
 using std::placeholders::_3;
 
 namespace rt2_assignment1{
+  // server (/position_server) to generate random position 
     class RandomPositionServer : public rclcpp::Node
 {
 public:
+  /*
+    Constructor
+    Server : /go_to_point
+            callback function : randMToN
+    */
+
   RandomPositionServer(const rclcpp::NodeOptions & options)
   : Node("random_position_server", options)
   {
@@ -24,10 +31,15 @@ public:
   }
 
 private:
-
+  /*
+    generate the random variable
+    */
   double randMToN(double M, double N)
 {     return M + (rand() / ( RAND_MAX / (N-M) ) ) ; }
-
+  
+  /*
+    callback function to generate the random variable of x,y, theta
+    */
   bool myrandom(
   const std::shared_ptr<rmw_request_id_t> request_header,
   const std::shared_ptr<RandomPosition::Request> req,
