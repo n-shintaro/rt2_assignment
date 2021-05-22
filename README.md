@@ -18,6 +18,8 @@ In the branch ros2, the cpp nodes (state_machine and random_position_server) are
 
 ### Step1 : Build the ROS packages
 
+at first, we should install ros1 package from main branch
+
 ```
 source /root/ros_ws/devel/setup.bash
 cd ros_ws
@@ -54,12 +56,21 @@ roslaunch rt2_assignment1 sim_python.launch
 ### Step2: run ros1_bridge (in the shell of ROS and ROS2)
 
 ```
-ros2 run ros1_bridge dynamic_bridge --bridge-all-topics
+ros2 run ros1_bridge dynamic_bridge
 ```
 
 ### Step3 : run ros2  (in the shell of ROS2)
 
 ```
 ros2 launch rt2_assignment1 sim_comp_launch.py 
+```
+
+
+
+### the way to launch all the nodes together
+
+```
+cd ros2_ws/src/rt2_assignment1
+./launch_all.sh
 ```
 
