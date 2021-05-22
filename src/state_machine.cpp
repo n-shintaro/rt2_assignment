@@ -8,11 +8,12 @@
 
 bool start = false; // start becomes true when the use command start
 
-int mode=4;
 // mode=1: start
 // mode=2: reach the goal
 // mode=3 :interrupt goal
 // mode=4 : not to change
+int mode=4;
+
 
 /*
     when the user request start, mode=1.
@@ -36,7 +37,9 @@ int main(int argc, char **argv)
 {
    ros::init(argc, argv, "state_machine");
    ros::NodeHandle n;
+   //server
    ros::ServiceServer service= n.advertiseService("/user_interface", user_interface);
+   //client
    ros::ServiceClient client_rp = n.serviceClient<rt2_assignment1::RandomPosition>("/position_server");
    // action client
    actionlib::SimpleActionClient<rt2_assignment1::MotionAction> ac("/go_to_point", true);
@@ -47,7 +50,8 @@ int main(int argc, char **argv)
    rp.request.x_min = -5.0;
    rp.request.y_max = 5.0;
    rp.request.y_min = -5.0;
-    while(!ac.waitForServer(ros::Duration(5.0))){
+
+  while(!ac.waitForServer(ros::Duration(5.0))){
      ROS_INFO("Please wait for action server to come up");
    }
 
@@ -84,7 +88,7 @@ int main(int argc, char **argv)
           mode = 4;
         }
         else{
-          ROS_DEBUG("can't reach the goal");
+          ROS_DEBUG("there is some error");
           mode = 4;
         }
     }

@@ -141,6 +141,9 @@ def go_to_point(goal):
     # create messages that are used to publish feedback/result
     feedback = rt2_assignment1.msg.MotionFeedback()
     result = rt2_assignment1.msg.MotionResult()
+    # when the action ended when
+    # - the robot reaches the goal
+    # - goal is canceled
     finished_flag=False
     success=True
     while not rospy.is_shutdown() and not finished_flag:
@@ -158,25 +161,25 @@ def go_to_point(goal):
         elif state_ == 0:
             feedback.stat = "Fixing the yaw"
             feedback.actual_pose = pose_
-            act_s.publish_feedback(feedback)
             fix_yaw(desired_position)
         elif state_ == 1:
             feedback.stat = "Go straight ahead"
             feedback.actual_pose = pose_
-            act_s.publish_feedback(feedback)
             go_straight_ahead(desired_position)
         elif state_ == 2:
             feedback.stat = "fix the final state!"
             feedback.actual_pose = pose_
-            act_s.publish_feedback(feedback)
             fix_final_yaw(des_yaw)
         elif state_ == 3:
             feedback.stat = "Target reached!"
             feedback.actual_pose = pose_
             done()
             finished_flag=True
+        # feedback is published
         act_s.publish_feedback(feedback)
         rate.sleep()
+    #Once the action has finished the action notifies the action
+    #client that the action is complete by setting succeeded.
     if success:
         feedback.stat="the robot reaches the goal"
         result.reached=success
@@ -190,6 +193,8 @@ def main():
     pub_ = rospy.Publisher('/cmd_vel', Twist, queue_size=1)
     sub_odom = rospy.Subscriber('/odom', Odometry, clbk_odom)
     # service = rospy.Service('/go_to_point', Position, go_to_point)
+
+    #an action server is created.
     act_s = actionlib.SimpleActionServer(
         '/go_to_point', rt2_assignment1.msg.MotionAction, go_to_point, auto_start=False)
     act_s.start()
