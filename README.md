@@ -11,7 +11,7 @@ In the branch ros2, the cpp nodes (state_machine and random_position_server) are
 - Ubuntu 20.04
 - ROS noetic
 - ROS2 foxy
-- install ros1_bridge (https://github.com/ros2/ros1_bridge)
+- install [ros1_bridge](https://github.com/ros2/ros1_bridge)
 - install gnome-terminal
 
 ## Compile
@@ -67,7 +67,7 @@ ros2 launch rt2_assignment1 sim_comp_launch.py
 
 
 
-### the way to launch all the nodes together
+### Another way to launch all the nodes together
 
 ```
 cd ros2_ws/src/rt2_assignment1
