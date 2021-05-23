@@ -1,6 +1,51 @@
 # Research Track 2 - first assignment
 ## OverView
 
+### the robot movement
+
+- the robot moves to the random position when user demand the robot to move.
+  - when the user type 1 in the shell, the robot starts to move
+  - when the user type 0 in the shell, the robot try to stop (in the action branch, the robot stops immediately. Otherwise, the robot can be stopped only when it reaches a target)
+
+### nodes
+
+There are four main nodes
+
+- GotoPoint node
+  - drive the robot towards the random position in space (x,y) and with a certain angle (theta)
+- User interface node
+  - receive the user request
+  - ask the state_machine to send the command to the robot
+- Position server node
+  - reply with random values for x, y, and theta, where x and y should be limited between some min and max values
+- State machine node
+  - give the possibility to start or stop the robot behaviour when the user requests
+
+
+
+### Requirements of assignment
+
+#### Q1) Action branch
+
+- state machine node should now implement mechanisms for possibly canceling the goal, when user type stop (0) command in the shell
+
+
+
+#### Q2) ROS2 branch
+
+- cpp nodes are written for ROS as components
+- by using the ros1_bridge, they can be interfaces with the ROS nodes and with simulation in Gazebo.
+
+
+
+#### Q3) Main branch
+
+- use Vrep in stead of Gazebo
+
+- Vrep communicate with ROS (not ROS2)
+
+  
+
 ### Description of the content of the package
 
 - go_to_point.py
@@ -98,7 +143,7 @@ cd cakin_workspace
 catkin_make
 ```
 
-launch go_to_point.py and user_interface.py with gazeb
+launch go_to_point.py and user_interface.py with gazebo
 
 ```
 roslaunch rt2_assignment1 sim_python.launch
@@ -201,7 +246,7 @@ cd /install folder of Coppeliasim
 
 
 
-file->open scene->go to the poinner_ctrl folder of rt2_assignment package-> pioneerROS_rt2.ttt
+file->open scene->go to the vrep folder of rt2_assignment package-> pioneerROS_rt2.ttt
 
 and run the simulator
 
