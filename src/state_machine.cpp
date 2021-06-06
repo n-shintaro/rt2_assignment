@@ -5,10 +5,16 @@
 #include <rt2_assignment1/MotionAction.h>
 #include <actionlib/client/simple_action_client.h>
 #include <actionlib/client/terminal_state.h>
+#include <std_msgs/Float32.h>
 
 bool start = false; // start becomes true when the use command start
 
 int mode=4;
+int goal_number=0;
+int cancel_number=0;
+double start_time=0;
+double reached_time=0;
+
 // mode=1: start
 // mode=2: reach the goal
 // mode=3 :interrupt goal
@@ -45,13 +51,12 @@ void feedbackCllbck(const rt2_assignment1::MotionFeedbackConstPtr& feedback){
 
 
 int main(int argc, char **argv)
-
-
 {
    ros::init(argc, argv, "state_machine");
    ros::NodeHandle n;
    ros::ServiceServer service= n.advertiseService("/user_interface", user_interface);
    ros::ServiceClient client_rp = n.serviceClient<rt2_assignment1::RandomPosition>("/position_server");
+   ros::Publisher reached_time_pub = n.advertise<std_msgs::Float32>("/reached_time", 10);
    // action client
    actionlib::SimpleActionClient<rt2_assignment1::MotionAction> ac("/go_to_point", true);
 
@@ -79,6 +84,8 @@ int main(int argc, char **argv)
         std::cout << "\nGoing to the position: x= " << goal.actual_target.x << " y= " <<goal.actual_target.y << " theta = " <<goal.actual_target.theta << std::endl;
         ROS_INFO("Sending goal");
         ac.sendGoal(goal, &doneCllbck, &activeCllbck, &feedbackCllbck);
+        start_time=ros::Time::now().toSec();
+
         mode=4;
         // else
         //     ROS_INFO("The base failed to reach the target for some reason");
@@ -89,7 +96,10 @@ int main(int argc, char **argv)
     else if(mode==3){
         std::cout << "\n mode= " << mode<<std::endl;
         ac.cancelGoal();
+        cancel_number++;
         ROS_INFO("Goal is canceled!");
+        std::cout << "\n cancel_number= " << cancel_number<<std::endl;
+        n.setParam("cancel_param",cancel_number);
         mode=4;
     }
     /* action ended  when
@@ -100,6 +110,14 @@ int main(int argc, char **argv)
         actionlib::SimpleClientGoalState goal_state = ac.getState();
         if(goal_state == actionlib::SimpleClientGoalState::SUCCEEDED){
             ROS_INFO("Hooray, target reached!");
+            reached_time=ros::Time::now().toSec();
+
+            std_msgs::Float32 end_time;
+            end_time.data=reached_time-start_time;
+            reached_time_pub.publish(end_time);
+            goal_number++;
+            std::cout << "\n goal_number= " << goal_number<<std::endl;
+            n.setParam("goal_param",goal_number);
             mode=1; //go to the next target
         }
         else if(goal_state == actionlib::SimpleClientGoalState::PREEMPTED){
