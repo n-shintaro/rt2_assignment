@@ -101,6 +101,7 @@ int main(int argc, char **argv)
         std::cout << "\n cancel_number= " << cancel_number<<std::endl;
         n.setParam("cancel_param",cancel_number);
         mode=4;
+        print()
     }
     /* action ended  when
          - the robot reach the goal
