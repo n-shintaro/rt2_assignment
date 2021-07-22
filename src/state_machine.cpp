@@ -115,6 +115,7 @@ int main(int argc, char **argv)
             std_msgs::Float32 end_time;
             end_time.data=reached_time-start_time;
             reached_time_pub.publish(end_time);
+            std::cout << "\n end_time= " << end_time<<std::endl;
             goal_number++;
             std::cout << "\n goal_number= " << goal_number<<std::endl;
             n.setParam("goal_param",goal_number);
