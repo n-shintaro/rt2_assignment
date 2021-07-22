@@ -1,5 +1,10 @@
 \hypertarget{state__machine_8cpp}{}\doxysection{src/state\+\_\+machine.cpp File Reference}
 \label{state__machine_8cpp}\index{src/state\_machine.cpp@{src/state\_machine.cpp}}
+
+
+This files creates a state machine.  
+
+
 {\ttfamily \#include \char`\"{}ros/ros.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}rt2\+\_\+assignment1/\+Command.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}rt2\+\_\+assignment1/\+Position.\+h\char`\"{}}\newline
@@ -46,6 +51,29 @@ double \mbox{\hyperlink{state__machine_8cpp_a48730b83f4e94cd041eff56c72a685e8}{r
 \end{DoxyCompactItemize}
 
 
+\doxysubsection{Detailed Description}
+This files creates a state machine. 
+
+\begin{DoxyAuthor}{Author}
+Shintaro Nakaoka 
+\end{DoxyAuthor}
+\begin{DoxyVersion}{Version}
+0.\+1 
+\end{DoxyVersion}
+\begin{DoxyDate}{Date}
+22/07/2021
+\end{DoxyDate}
+Services \+: ~\newline
+ /user\+\_\+interface
+
+Clients\+:~\newline
+ /position\+\_\+server
+
+Action Client\+:~\newline
+ /go\+\_\+to\+\_\+point
+
+This node define the finite state machine. when service is received from user interface, it sends the service to position\+\_\+service. it sends the random position as the goal to \mbox{\hyperlink{namespacego__to__point}{go\+\_\+to\+\_\+point}}. 
+
 \doxysubsection{Function Documentation}
 \mbox{\Hypertarget{state__machine_8cpp_aba3037dad63055ba964aa37d23945167}\label{state__machine_8cpp_aba3037dad63055ba964aa37d23945167}} 
 \index{state\_machine.cpp@{state\_machine.cpp}!activeCllbck@{activeCllbck}}
@@ -53,30 +81,44 @@ double \mbox{\hyperlink{state__machine_8cpp_a48730b83f4e94cd041eff56c72a685e8}{r
 \doxysubsubsection{\texorpdfstring{activeCllbck()}{activeCllbck()}}
 {\footnotesize\ttfamily void active\+Cllbck (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
 
-\mbox{\Hypertarget{state__machine_8cpp_a27c5ee4b21889d5be303f7b9c478650b}\label{state__machine_8cpp_a27c5ee4b21889d5be303f7b9c478650b}} 
+callback function \mbox{\Hypertarget{state__machine_8cpp_a27c5ee4b21889d5be303f7b9c478650b}\label{state__machine_8cpp_a27c5ee4b21889d5be303f7b9c478650b}} 
 \index{state\_machine.cpp@{state\_machine.cpp}!doneCllbck@{doneCllbck}}
 \index{doneCllbck@{doneCllbck}!state\_machine.cpp@{state\_machine.cpp}}
 \doxysubsubsection{\texorpdfstring{doneCllbck()}{doneCllbck()}}
 {\footnotesize\ttfamily void done\+Cllbck (\begin{DoxyParamCaption}\item[{const actionlib\+::\+Simple\+Client\+Goal\+State \&}]{goal\+\_\+state,  }\item[{const rt2\+\_\+assignment1\+::\+Motion\+Result\+Const\+Ptr \&}]{result }\end{DoxyParamCaption})}
 
+callback function\+: when the robot reaches the goal, mode=2(reach the goal) 
+\begin{DoxyParams}{Parameters}
+{\em goal\+\_\+state(const} & actionlib\+::\+Simple\+Client\+Goal\+State\& goal\+\_\+state)\+: the goal state \\
+\hline
+{\em result} & (rt2\+\_\+assignment1\+::\+Motion\+Result\+Const\+Ptr\& result)\+: the result of the action \\
+\hline
+\end{DoxyParams}
 \mbox{\Hypertarget{state__machine_8cpp_a186744df3fa990df2df16b1410905822}\label{state__machine_8cpp_a186744df3fa990df2df16b1410905822}} 
 \index{state\_machine.cpp@{state\_machine.cpp}!feedbackCllbck@{feedbackCllbck}}
 \index{feedbackCllbck@{feedbackCllbck}!state\_machine.cpp@{state\_machine.cpp}}
 \doxysubsubsection{\texorpdfstring{feedbackCllbck()}{feedbackCllbck()}}
 {\footnotesize\ttfamily void feedback\+Cllbck (\begin{DoxyParamCaption}\item[{const rt2\+\_\+assignment1\+::\+Motion\+Feedback\+Const\+Ptr \&}]{feedback }\end{DoxyParamCaption})}
 
-\mbox{\Hypertarget{state__machine_8cpp_a3c04138a5bfe5d72780bb7e82a18e627}\label{state__machine_8cpp_a3c04138a5bfe5d72780bb7e82a18e627}} 
+callback function \mbox{\Hypertarget{state__machine_8cpp_a3c04138a5bfe5d72780bb7e82a18e627}\label{state__machine_8cpp_a3c04138a5bfe5d72780bb7e82a18e627}} 
 \index{state\_machine.cpp@{state\_machine.cpp}!main@{main}}
 \index{main@{main}!state\_machine.cpp@{state\_machine.cpp}}
 \doxysubsubsection{\texorpdfstring{main()}{main()}}
 {\footnotesize\ttfamily int main (\begin{DoxyParamCaption}\item[{int}]{argc,  }\item[{char $\ast$$\ast$}]{argv }\end{DoxyParamCaption})}
 
-\mbox{\Hypertarget{state__machine_8cpp_a1a9543636935547580c0657f4c7c0c2b}\label{state__machine_8cpp_a1a9543636935547580c0657f4c7c0c2b}} 
+main function\+: depending on the mode, change the behaviour of the robot if mode=1 in order for the robot to start to move,send the request to generate the random position. and send the goal to the robot. else if mode=2 It means that the robot reaches the goal. change mode=1 to set the new target position the robot. else if mode=3 when the user request stop, the goal is canceled. \mbox{\Hypertarget{state__machine_8cpp_a1a9543636935547580c0657f4c7c0c2b}\label{state__machine_8cpp_a1a9543636935547580c0657f4c7c0c2b}} 
 \index{state\_machine.cpp@{state\_machine.cpp}!user\_interface@{user\_interface}}
 \index{user\_interface@{user\_interface}!state\_machine.cpp@{state\_machine.cpp}}
 \doxysubsubsection{\texorpdfstring{user\_interface()}{user\_interface()}}
 {\footnotesize\ttfamily bool user\+\_\+interface (\begin{DoxyParamCaption}\item[{rt2\+\_\+assignment1\+::\+Command\+::\+Request \&}]{req,  }\item[{rt2\+\_\+assignment1\+::\+Command\+::\+Response \&}]{res }\end{DoxyParamCaption})}
 
+Service callback function\+: if user request is \char`\"{}start\char`\"{}, mode=1 (the robot starts to move) else if user request is \char`\"{}stop\char`\"{}, mode=3 (the goal is interrupted) 
+\begin{DoxyParams}{Parameters}
+{\em req(\+Command)} & user requests \\
+\hline
+{\em res} & (bool)\+: the response, if it succeed, response is true. \\
+\hline
+\end{DoxyParams}
 
 
 \doxysubsection{Variable Documentation}

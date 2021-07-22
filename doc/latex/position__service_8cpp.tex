@@ -1,9 +1,13 @@
 \hypertarget{position__service_8cpp}{}\doxysection{src/position\+\_\+service.cpp File Reference}
 \label{position__service_8cpp}\index{src/position\_service.cpp@{src/position\_service.cpp}}
+
+
+This files creates a service server to create the random position.  
+
+
 {\ttfamily \#include \char`\"{}ros/ros.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}rt2\+\_\+assignment1/\+Random\+Position.\+h\char`\"{}}\newline
-Include dependency graph for position\+\_\+service.\+cpp\+:
-\nopagebreak
+Include dependency graph for position\+\_\+service.\+cpp\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -14,12 +18,31 @@ Include dependency graph for position\+\_\+service.\+cpp\+:
 \begin{DoxyCompactItemize}
 \item 
 double \mbox{\hyperlink{position__service_8cpp_a10f83119b77a8fbd085a5550955f85ff}{rand\+M\+ToN}} (double M, double N)
-\item 
+\begin{DoxyCompactList}\small\item\em generate the random number \end{DoxyCompactList}\item 
 bool \mbox{\hyperlink{position__service_8cpp_ab65b9ff5368189ad34fe4989d50742e4}{myrandom}} (rt2\+\_\+assignment1\+::\+Random\+Position\+::\+Request \&req, rt2\+\_\+assignment1\+::\+Random\+Position\+::\+Response \&res)
 \item 
 int \mbox{\hyperlink{position__service_8cpp_a3c04138a5bfe5d72780bb7e82a18e627}{main}} (int argc, char $\ast$$\ast$argv)
 \end{DoxyCompactItemize}
 
+
+\doxysubsection{Detailed Description}
+This files creates a service server to create the random position. 
+
+\begin{DoxyAuthor}{Author}
+Shintaro Nakaoka 
+\end{DoxyAuthor}
+\begin{DoxyVersion}{Version}
+0.\+1 
+\end{DoxyVersion}
+\begin{DoxyDate}{Date}
+22/07/2021
+\end{DoxyDate}
+Services \+: ~\newline
+ /position\+\_\+server
+
+Description \+:
+
+This node define the position server. When the service is requested, my random function generates the random position between the max and the min. 
 
 \doxysubsection{Function Documentation}
 \mbox{\Hypertarget{position__service_8cpp_a3c04138a5bfe5d72780bb7e82a18e627}\label{position__service_8cpp_a3c04138a5bfe5d72780bb7e82a18e627}} 
@@ -40,3 +63,14 @@ int \mbox{\hyperlink{position__service_8cpp_a3c04138a5bfe5d72780bb7e82a18e627}{m
 \doxysubsubsection{\texorpdfstring{randMToN()}{randMToN()}}
 {\footnotesize\ttfamily double rand\+M\+ToN (\begin{DoxyParamCaption}\item[{double}]{M,  }\item[{double}]{N }\end{DoxyParamCaption})}
 
+
+
+generate the random number 
+
+
+\begin{DoxyParams}{Parameters}
+{\em M} & (double)\+: the upper bound \\
+\hline
+{\em N} & (double)\+: the lower bound \\
+\hline
+\end{DoxyParams}

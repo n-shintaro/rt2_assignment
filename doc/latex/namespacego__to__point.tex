@@ -4,7 +4,7 @@
 \begin{DoxyCompactItemize}
 \item 
 def \mbox{\hyperlink{namespacego__to__point_a36304a9f313b0579f7fc69fa01695524}{clbk\+\_\+odom}} (msg)
-\begin{DoxyCompactList}\small\item\em callback function of odometry \end{DoxyCompactList}\item 
+\begin{DoxyCompactList}\small\item\em callback function of odometry and receive the position and orientation from the robot \end{DoxyCompactList}\item 
 def \mbox{\hyperlink{namespacego__to__point_a31ee48e5cae36821049b572a96b7c8be}{change\+\_\+state}} (state)
 \begin{DoxyCompactList}\small\item\em update the state \end{DoxyCompactList}\item 
 def \mbox{\hyperlink{namespacego__to__point_ac688bb56fa84763ea2edefc30cae032a}{normalize\+\_\+angle}} (angle)
@@ -16,11 +16,11 @@ def \mbox{\hyperlink{namespacego__to__point_ac8579665c0fbf665f734476554fac37d}{g
 def \mbox{\hyperlink{namespacego__to__point_a4a406386ca62830c19c93949e923f7bd}{fix\+\_\+final\+\_\+yaw}} (des\+\_\+yaw)
 \begin{DoxyCompactList}\small\item\em orient the robot toward the final yaw \end{DoxyCompactList}\item 
 def \mbox{\hyperlink{namespacego__to__point_ac2587220a4ac9c845bc9c5b0b45d5835}{done}} ()
-\begin{DoxyCompactList}\small\item\em stop the robot \end{DoxyCompactList}\item 
+\begin{DoxyCompactList}\small\item\em stop the robot and set the robot linear and angluar vel to 0 \end{DoxyCompactList}\item 
 def \mbox{\hyperlink{namespacego__to__point_a2203d17b7e563bee20ed4c988548df45}{go\+\_\+to\+\_\+point}} (goal)
-\item 
+\begin{DoxyCompactList}\small\item\em state machine\+: depending on the state, change the behaviour of the robot until goal is preempted. \end{DoxyCompactList}\item 
 def \mbox{\hyperlink{namespacego__to__point_ab92bd6db1ec323a4d795ed6cb40aebe1}{main}} ()
-\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em main function\+: define the publisher and subscriber \end{DoxyCompactList}\end{DoxyCompactItemize}
 \doxysubsection*{Variables}
 \begin{DoxyCompactItemize}
 \item 
@@ -80,13 +80,11 @@ update the state
 
 
 
-callback function of odometry 
-
-receive the position and orientation from the robot
+callback function of odometry and receive the position and orientation from the robot 
 
 
 \begin{DoxyParams}{Parameters}
-{\em msg} & of odometry(\+Odometry)\+:the new odometry message \\
+{\em msg} & s(\+Odometry)\+: the new odometry message \\
 \hline
 \end{DoxyParams}
 \mbox{\Hypertarget{namespacego__to__point_ac2587220a4ac9c845bc9c5b0b45d5835}\label{namespacego__to__point_ac2587220a4ac9c845bc9c5b0b45d5835}} 
@@ -97,11 +95,11 @@ receive the position and orientation from the robot
 
 
 
-stop the robot 
+stop the robot and set the robot linear and angluar vel to 0 
 
 
 \begin{DoxyParams}{Parameters}
-{\em des\+\_\+pos(float)} & the desired position \\
+{\em des\+\_\+pos(des\+\_\+yaw)} & the desired yaw \\
 \hline
 \end{DoxyParams}
 \mbox{\Hypertarget{namespacego__to__point_a4a406386ca62830c19c93949e923f7bd}\label{namespacego__to__point_a4a406386ca62830c19c93949e923f7bd}} 
@@ -155,11 +153,24 @@ move the robot toward the goal
 \doxysubsubsection{\texorpdfstring{go\_to\_point()}{go\_to\_point()}}
 {\footnotesize\ttfamily def go\+\_\+to\+\_\+point.\+go\+\_\+to\+\_\+point (\begin{DoxyParamCaption}\item[{}]{goal }\end{DoxyParamCaption})}
 
+
+
+state machine\+: depending on the state, change the behaviour of the robot until goal is preempted. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em des\+\_\+pos(float)} & the desired position \\
+\hline
+\end{DoxyParams}
 \mbox{\Hypertarget{namespacego__to__point_ab92bd6db1ec323a4d795ed6cb40aebe1}\label{namespacego__to__point_ab92bd6db1ec323a4d795ed6cb40aebe1}} 
 \index{go\_to\_point@{go\_to\_point}!main@{main}}
 \index{main@{main}!go\_to\_point@{go\_to\_point}}
 \doxysubsubsection{\texorpdfstring{main()}{main()}}
 {\footnotesize\ttfamily def go\+\_\+to\+\_\+point.\+main (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+main function\+: define the publisher and subscriber 
 
 \mbox{\Hypertarget{namespacego__to__point_ac688bb56fa84763ea2edefc30cae032a}\label{namespacego__to__point_ac688bb56fa84763ea2edefc30cae032a}} 
 \index{go\_to\_point@{go\_to\_point}!normalize\_angle@{normalize\_angle}}
@@ -176,11 +187,9 @@ normalize the angle between \mbox{[}-\/pi, pi\mbox{]}
 {\em angle(float)} & the current angle.\\
 \hline
 \end{DoxyParams}
-
-\begin{DoxyRetVals}{Return values}
-{\em angle(angle)} & normalized angle \\
-\hline
-\end{DoxyRetVals}
+\begin{DoxyReturn}{Returns}
+angle(float)\+: normalized angle 
+\end{DoxyReturn}
 
 
 \doxysubsection{Variable Documentation}

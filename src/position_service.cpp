@@ -1,17 +1,39 @@
+/**
+ * \file position_service.cpp
+ * \brief This files creates a service server to create the random position
+ * \author Shintaro Nakaoka
+ * \version 0.1
+ * \date 22/07/2021
+ * 
+ * \details
+ * 
+ * Services : <BR>
+ * 		/position_server
+ * 
+ *  Description :
+ *  
+ *  This node define the position server. When the service is requested,
+ *  my random function generates the random position between the max and the min.
+ *
+*
+ */
+
 #include "ros/ros.h"
 #include "rt2_assignment1/RandomPosition.h"
 
 
-/*
-Generate the random number
-M: min
-N: max
+/**
+*    \brief generate the random number
+*
+*    \param M (double): the upper bound
+*    \param N (double): the lower bound
 */
+
 double randMToN(double M, double N)
 {     return M + (rand() / ( RAND_MAX / (N-M) ) ) ; }
 
 /*
-Generate the random x,y,theta
+Generate the rando
 callback function of /position_server
 M: min
 N: max

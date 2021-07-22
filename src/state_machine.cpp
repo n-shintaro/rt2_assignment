@@ -1,3 +1,27 @@
+/**
+ * \file state_machine.cpp
+ * \brief This files creates a state machine
+ * \author Shintaro Nakaoka
+ * \version 0.1
+ * \date 22/07/2021
+ * 
+ * \details
+ * 
+ * Services : <BR>
+ * 		/user_interface
+ * 
+ * Clients:<Br>
+ *     /position_server
+ * 
+ *  Action Client:<Br>
+ *      /go_to_point
+ *  
+ *  This node define the finite state machine.
+ *  when service is received from user interface, it sends the service to position_service.
+ *  it sends the random position as the goal to go_to_point.
+*
+ */
+
 #include "ros/ros.h"
 #include "rt2_assignment1/Command.h"
 #include "rt2_assignment1/Position.h"
@@ -24,6 +48,14 @@ double reached_time=0;
     when the user request start, mode=1.
     otherwise mode=3
 */
+
+/**
+ * Service callback function:
+ * if user request is "start", mode=1 (the robot starts to move)
+ * else if user request is "stop", mode=3 (the goal is interrupted)
+ * \param req(Command): user requests
+ * \param res (bool): the response, if it succeed, response is true.
+*/
 bool user_interface(rt2_assignment1::Command::Request &req, rt2_assignment1::Command::Response &res){
     ROS_INFO("user_interface");
     if (req.command == "start"){
@@ -37,19 +69,42 @@ bool user_interface(rt2_assignment1::Command::Request &req, rt2_assignment1::Com
     return true;
 }
 
+/**
+ * callback function:
+ * when the robot reaches the goal, mode=2(reach the goal)
+ * \param goal_state(const actionlib::SimpleClientGoalState& goal_state): the goal state
+ * \param result (rt2_assignment1::MotionResultConstPtr& result): the result of the action
+*/
+
 void doneCllbck(const actionlib::SimpleClientGoalState& goal_state,
                 const rt2_assignment1::MotionResultConstPtr& result){
   mode = 2; /* Goal reached state */
 }
 
+/**
+ * callback function
+*/
 void activeCllbck(){return;}
 
+/**
+ * callback function
+*/
+
 void feedbackCllbck(const rt2_assignment1::MotionFeedbackConstPtr& feedback){
-  //ROS_INFO("FEEDBACK: %s", feedback->status.c_str());
   return;
 }
 
-
+/**
+ * main function:
+ * depending on the mode, change the behaviour of the robot
+ * if mode=1
+ *      in order for the robot to start to move,send the request to generate the random position.
+ *        and send the goal to the robot.
+ * else if mode=2
+ *       It means that the robot reaches the goal. change mode=1 to set the new target position the robot.
+ * else if mode=3
+ *        when the user request stop, the goal is canceled.
+*/
 int main(int argc, char **argv)
 {
    ros::init(argc, argv, "state_machine");
