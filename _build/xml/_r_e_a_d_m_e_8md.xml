@@ -1,0 +1,255 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="_r_e_a_d_m_e_8md" kind="file" language="Markdown">
+    <compoundname>README.md</compoundname>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline><highlight class="normal">#<sp/>Research<sp/>Track<sp/>2<sp/>-<sp/>first<sp/>assignment</highlight></codeline>
+<codeline><highlight class="normal">##<sp/>OverView</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">###<sp/>the<sp/>robot<sp/>movement</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">-<sp/>the<sp/>robot<sp/>moves<sp/>to<sp/>the<sp/>random<sp/>position<sp/>when<sp/>user<sp/>demand<sp/>the<sp/>robot<sp/>to<sp/>move.</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>-<sp/>when<sp/>the<sp/>user<sp/>type<sp/>1<sp/>in<sp/>the<sp/>shell,<sp/>the<sp/>robot<sp/>starts<sp/>to<sp/>move</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>-<sp/>when<sp/>the<sp/>user<sp/>type<sp/>0<sp/>in<sp/>the<sp/>shell,<sp/>the<sp/>robot<sp/>try<sp/>to<sp/>stop<sp/>(in<sp/>the<sp/>action<sp/>branch,<sp/>the<sp/>robot<sp/>stops<sp/>immediately.<sp/>Otherwise,<sp/>the<sp/>robot<sp/>can<sp/>be<sp/>stopped<sp/>only<sp/>when<sp/>it<sp/>reaches<sp/>a<sp/>target)</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">###<sp/>nodes</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">There<sp/>are<sp/>four<sp/>main<sp/>nodes</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">-<sp/>GotoPoint<sp/>node</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>-<sp/>drive<sp/>the<sp/>robot<sp/>towards<sp/>the<sp/>random<sp/>position<sp/>in<sp/>space<sp/>(x,y)<sp/>and<sp/>with<sp/>a<sp/>certain<sp/>angle<sp/>(theta)</highlight></codeline>
+<codeline><highlight class="normal">-<sp/>User<sp/>interface<sp/>node</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>-<sp/>receive<sp/>the<sp/>user<sp/>request</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>-<sp/>ask<sp/>the<sp/>state_machine<sp/>to<sp/>send<sp/>the<sp/>command<sp/>to<sp/>the<sp/>robot</highlight></codeline>
+<codeline><highlight class="normal">-<sp/>Position<sp/>server<sp/>node</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>-<sp/>reply<sp/>with<sp/>random<sp/>values<sp/>for<sp/>x,<sp/>y,<sp/>and<sp/>theta,<sp/>where<sp/>x<sp/>and<sp/>y<sp/>should<sp/>be<sp/>limited<sp/>between<sp/>some<sp/>min<sp/>and<sp/>max<sp/>values</highlight></codeline>
+<codeline><highlight class="normal">-<sp/>State<sp/>machine<sp/>node</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>-<sp/>give<sp/>the<sp/>possibility<sp/>to<sp/>start<sp/>or<sp/>stop<sp/>the<sp/>robot<sp/>behaviour<sp/>when<sp/>the<sp/>user<sp/>requests</highlight></codeline>
+<codeline></codeline>
+<codeline></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">###<sp/>Requirements<sp/>of<sp/>assignment</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">####<sp/>Q1)<sp/>Action<sp/>branch</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">-<sp/>state<sp/>machine<sp/>node<sp/>should<sp/>now<sp/>implement<sp/>mechanisms<sp/>for<sp/>possibly<sp/>canceling<sp/>the<sp/>goal,<sp/>when<sp/>user<sp/>type<sp/>stop<sp/>(0)<sp/>command<sp/>in<sp/>the<sp/>shell</highlight></codeline>
+<codeline></codeline>
+<codeline></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">####<sp/>Q2)<sp/>ROS2<sp/>branch</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">-<sp/>cpp<sp/>nodes<sp/>are<sp/>written<sp/>for<sp/>ROS<sp/>as<sp/>components</highlight></codeline>
+<codeline><highlight class="normal">-<sp/>by<sp/>using<sp/>the<sp/>ros1_bridge,<sp/>they<sp/>can<sp/>be<sp/>interfaces<sp/>with<sp/>the<sp/>ROS<sp/>nodes<sp/>and<sp/>with<sp/>simulation<sp/>in<sp/>Gazebo.</highlight></codeline>
+<codeline></codeline>
+<codeline></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">####<sp/>Q3)<sp/>Main<sp/>branch</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">-<sp/>use<sp/>Vrep<sp/>in<sp/>stead<sp/>of<sp/>Gazebo</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">-<sp/>Vrep<sp/>communicate<sp/>with<sp/>ROS<sp/>(not<sp/>ROS2)</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">###<sp/>Description<sp/>of<sp/>the<sp/>content<sp/>of<sp/>the<sp/>package</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">-<sp/>go_to_point.py</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>-<sp/>receive<sp/>the<sp/>goal<sp/>position<sp/>(/go_to_point)</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>-<sp/>control<sp/>the<sp/>velocity<sp/>depending<sp/>on<sp/>the<sp/>position</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>-<sp/>send<sp/>the<sp/>velocity<sp/>(/cmd_vel)</highlight></codeline>
+<codeline><highlight class="normal">-<sp/>user_interface.py</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>-<sp/>user<sp/>interface<sp/>(command<sp/>line)</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>-<sp/>when<sp/>the<sp/>user<sp/>put<sp/>&quot;start&quot;,<sp/>the<sp/>robot<sp/>starts<sp/>to<sp/>move</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>-<sp/>when<sp/>the<sp/>user<sp/>put<sp/>&quot;stop&quot;,<sp/>the<sp/>robot<sp/>stops</highlight></codeline>
+<codeline><highlight class="normal">-<sp/>position_service.cpp</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>-<sp/>when<sp/>service<sp/>is<sp/>received<sp/>from<sp/>state<sp/>machine,<sp/>it<sp/>returns<sp/>the<sp/>random<sp/>position</highlight></codeline>
+<codeline><highlight class="normal">-<sp/>state_machine.cpp</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>-<sp/>when<sp/>service<sp/>is<sp/>recived<sp/>from<sp/>user<sp/>interface,<sp/>it<sp/>sends<sp/>the<sp/>service<sp/>to<sp/>position_service.<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>-<sp/>it<sp/>sends<sp/>the<sp/>random<sp/>position<sp/>as<sp/>the<sp/>goal<sp/>to<sp/>go_to_point</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">####<sp/>Topic<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">-<sp/>/cmd_vel</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>-<sp/>Type:<sp/>gemetry_msgs/Twist</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>-<sp/>Publisher<sp/>Node:<sp/>/go_to_point</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>-<sp/>Subscriber<sp/>Node:<sp/>/gazebo<sp/>or<sp/>/vrep</highlight></codeline>
+<codeline><highlight class="normal">-<sp/>/odom</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>-<sp/>Type:<sp/>nav_msgs/Odometry</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>-<sp/>Publisher<sp/>Node:<sp/>/gazebo<sp/>or<sp/>/vrep</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>-<sp/>Subscriber<sp/>Node:<sp/>/go_to_point</highlight></codeline>
+<codeline></codeline>
+<codeline></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">####<sp/>Service</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">-<sp/>/go_to_point</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>-<sp/>Client<sp/>Node:<sp/>go_to_point</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>-<sp/>Server<sp/>Node:<sp/>state_machine</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>-<sp/>Type<sp/>:<sp/>Position</highlight></codeline>
+<codeline><highlight class="normal">-<sp/>/position_server</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>-<sp/>Client<sp/>Node:<sp/>state_machine</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>-<sp/>Server<sp/>Node:<sp/>random_position_server</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>-<sp/>Type:<sp/><sp/>RandomPosition</highlight></codeline>
+<codeline><highlight class="normal">-<sp/>/user_interface</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>-<sp/>Client<sp/>Node:<sp/>user_interface</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>-<sp/>Server<sp/>Node:<sp/>state_machine</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>-<sp/>Type<sp/>:<sp/>Command</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/></highlight></codeline>
+<codeline></codeline>
+<codeline></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">####<sp/>custom<sp/>service</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">-<sp/>rt2_assignment1/RandomPosition</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/>-<sp/>request</highlight></codeline>
+<codeline><highlight class="normal">-<sp/>float32<sp/>x_max</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>-<sp/>float32<sp/>x_min</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>-<sp/>float32<sp/>y_max</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>-<sp/>float32<sp/>y_min</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>-<sp/>response</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>-<sp/>float32<sp/>x</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>-<sp/>float32<sp/>y</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>-<sp/>float32<sp/>theta</highlight></codeline>
+<codeline><highlight class="normal">-<sp/>rt2_assignment1/Position</highlight></codeline>
+<codeline><highlight class="normal">-<sp/>request</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>-<sp/>float32<sp/>x</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>-<sp/>float32<sp/>y</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>-<sp/>float32<sp/>theta</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>-<sp/>response</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>-<sp/>bool<sp/>ok</highlight></codeline>
+<codeline><highlight class="normal">-<sp/>rt2_assignment1/Position</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>-<sp/>request</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>-<sp/>string<sp/>command</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>-<sp/>response</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>-<sp/>bool<sp/>ok</highlight></codeline>
+<codeline></codeline>
+<codeline></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">##<sp/>Q1)<sp/>Action<sp/>branch</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">please<sp/>look<sp/>at<sp/>[Readme<sp/>of<sp/>action<sp/>branch](https://github.com/n-shintaro/rt2_assignment1/tree/action)</highlight></codeline>
+<codeline></codeline>
+<codeline></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">##<sp/>Q2)<sp/>ROS2<sp/>branch</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">please<sp/>look<sp/>at<sp/>[Readme<sp/>of<sp/>action<sp/>branch](https://github.com/n-shintaro/rt2_assignment1/tree/ros2)</highlight></codeline>
+<codeline></codeline>
+<codeline></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">##<sp/>Q3)<sp/>main<sp/>branch</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">###<sp/>Dependencies</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">This<sp/>software<sp/>is<sp/>built<sp/>on<sp/>the<sp/>Robotic<sp/>Operating<sp/>System<sp/>([ROS]),<sp/>which<sp/>needs<sp/>to<sp/>be<sp/>install<sp/>first<sp/>and<sp/>create<sp/>the<sp/>workspace.<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">-<sp/>Ubuntu<sp/>20.04</highlight></codeline>
+<codeline><highlight class="normal">-<sp/>ROS<sp/>noetic</highlight></codeline>
+<codeline><highlight class="normal">-<sp/>CoppeliaSim<sp/>V<sp/>4.2.0</highlight></codeline>
+<codeline></codeline>
+<codeline></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">###<sp/>Setting<sp/>of<sp/>CoppeliaSim</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">####<sp/>download<sp/>[here](http://www.coppeliarobotics.com/downloads.html)</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">####<sp/>ROS<sp/>integration</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">Vrep<sp/>should<sp/>be<sp/>already6<sp/>integrated<sp/>with<sp/>ROS.<sp/>You<sp/>just<sp/>need<sp/>to<sp/>launch<sp/>the<sp/>ROS<sp/>master<sp/>before<sp/>running<sp/>the<sp/>V-REP<sp/>(CoppeliaSim)<sp/>software.<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">If<sp/>there<sp/>is<sp/>any<sp/>problem<sp/>in<sp/>building<sp/>the<sp/>plugin,<sp/>you<sp/>will<sp/>need<sp/>to<sp/>recompile<sp/>it<sp/>by<sp/>yourself:<sp/>you</highlight></codeline>
+<codeline><highlight class="normal">can<sp/>download<sp/>it<sp/>from<sp/>here</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">```</highlight></codeline>
+<codeline><highlight class="normal">#<sp/>install<sp/>xsltproc</highlight></codeline>
+<codeline><highlight class="normal">Run<sp/>apt-get<sp/>install<sp/>xsltproc</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">#<sp/>install<sp/>xmlschema</highlight></codeline>
+<codeline><highlight class="normal">pip3<sp/>install<sp/>xmlschema</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">git<sp/>clone<sp/>https://github.com/CoppeliaRobotics/simExtROS.git</highlight></codeline>
+<codeline><highlight class="normal">```</highlight></codeline>
+<codeline></codeline>
+<codeline></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">In<sp/>order<sp/>to<sp/>build<sp/>the<sp/>packages,<sp/>navigate<sp/>to<sp/>the<sp/>catkin_ws<sp/>folder<sp/>and<sp/>type:</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">```</highlight></codeline>
+<codeline><highlight class="normal">###<sp/>it<sp/>is<sp/>better<sp/>to<sp/>write<sp/>it<sp/>in<sp/>.bashrc</highlight></codeline>
+<codeline><highlight class="normal">export<sp/>COPPELIASIM_ROOT_DIR=~/path/to/coppeliaSim/folder</highlight></codeline>
+<codeline><highlight class="normal">catkin_make<sp/>--cmake-args<sp/>-DCMAKE_BUILD_TYPE=Release</highlight></codeline>
+<codeline><highlight class="normal">```</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">Vrep<sp/>should<sp/>be<sp/>executed<sp/>when<sp/>the<sp/>ROS<sp/>master<sp/>is<sp/>already<sp/>running</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">```</highlight></codeline>
+<codeline><highlight class="normal">roscore</highlight></codeline>
+<codeline><highlight class="normal">```</highlight></codeline>
+<codeline></codeline>
+<codeline></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">```</highlight></codeline>
+<codeline><highlight class="normal">cd<sp/>/install<sp/>folder<sp/>of<sp/>Coppeliasim</highlight></codeline>
+<codeline><highlight class="normal">./coppeliasim.sh</highlight></codeline>
+<codeline><highlight class="normal">```</highlight></codeline>
+<codeline></codeline>
+<codeline></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">Copy<sp/>the<sp/>devel/lib/libsimExtROS.so<sp/>file<sp/>to<sp/>the<sp/>CoppeliaSim<sp/>installation<sp/>folder.</highlight></codeline>
+<codeline></codeline>
+<codeline></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">###<sp/>Compiling<sp/>and<sp/>Running</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">####<sp/>first<sp/>terminal</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">Build<sp/>catkin_workspace</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">```</highlight></codeline>
+<codeline><highlight class="normal">cd<sp/>cakin_workspace</highlight></codeline>
+<codeline><highlight class="normal">catkin_make</highlight></codeline>
+<codeline><highlight class="normal">roscore</highlight></codeline>
+<codeline><highlight class="normal">```</highlight></codeline>
+<codeline></codeline>
+<codeline></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">####<sp/>second<sp/>terminal</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">start<sp/>CoppeliaSim</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">```</highlight></codeline>
+<codeline><highlight class="normal">cd<sp/>/install<sp/>folder<sp/>of<sp/>Coppeliasim</highlight></codeline>
+<codeline><highlight class="normal">./coppeliasim.sh</highlight></codeline>
+<codeline><highlight class="normal">```</highlight></codeline>
+<codeline></codeline>
+<codeline></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">file-&gt;open<sp/>scene-&gt;go<sp/>to<sp/>the<sp/>vrep<sp/>folder<sp/>of<sp/>rt2_assignment<sp/>package-&gt;<sp/>pioneerROS_rt2.ttt</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">and<sp/>run<sp/>the<sp/>simulator</highlight></codeline>
+<codeline></codeline>
+<codeline></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">####<sp/>third<sp/>terminal</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">launch<sp/>all<sp/>the<sp/>nodes<sp/>without<sp/>gazebo<sp/>simulator</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">```</highlight></codeline>
+<codeline><highlight class="normal">roslaunch<sp/>rt2_assignment1<sp/>sim_vrep.launch</highlight></codeline>
+<codeline><highlight class="normal">```</highlight></codeline>
+<codeline></codeline>
+<codeline></codeline>
+<codeline></codeline>
+<codeline></codeline>
+<codeline></codeline>
+<codeline></codeline>
+    </programlisting>
+    <location file="README.md"/>
+  </compounddef>
+</doxygen>

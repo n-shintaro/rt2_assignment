@@ -27,16 +27,20 @@
 *
 *    \param M (double): the upper bound
 *    \param N (double): the lower bound
+*
+*    \return radom number: between M and N
 */
 
 double randMToN(double M, double N)
 {     return M + (rand() / ( RAND_MAX / (N-M) ) ) ; }
 
-/*
-Generate the rando
-callback function of /position_server
-M: min
-N: max
+
+
+/**
+*    \brief callback function: generate the random position
+*
+*    \param req (rt2_assignment1::RandomPosition::Request): request of max and min number
+*    \param res(rt2_assignment1::RandomPosition::Response): response
 */
 
 bool myrandom (rt2_assignment1::RandomPosition::Request &req, rt2_assignment1::RandomPosition::Response &res){
@@ -46,8 +50,9 @@ bool myrandom (rt2_assignment1::RandomPosition::Request &req, rt2_assignment1::R
     return true;
 }
 
-/*
-server (/position_server) which generates the random x,y,theta
+/**
+*   \brief server (/position_server) which generates the random x,y,theta
+*
 */
 
 int main(int argc, char **argv)

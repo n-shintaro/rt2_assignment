@@ -1,18 +1,22 @@
 """
+
 .. module:: user_interface
-:platform: Unix
-:synopsis: Python module for the user Interface
-.. moduleauthor:: Shintaro Nakaoka shintaro0311@keio.jp
-This file contain the description of the movement of robot and
-drive the robot towards the random position in space (x,y) and with a certain angle (theta)
-Publishers to:<BR>
+    :platform: Unix
+    :synopsis: Python module for the user Interface
+
+..moduleauthor: Shintaro Nakaoka shintaro0311@keio.jp
+
+Publishers to:
  	\cmd_vel
 
-Subscribers to:<BR>
+Subscribers to:
     \odom
 
-Action Server:<BR>
+Action Server:
  	\go_to_point
+
+This file contain the description of the movement of robot and
+drive the robot towards the random position
 """
 
 #! /usr/bin/env python

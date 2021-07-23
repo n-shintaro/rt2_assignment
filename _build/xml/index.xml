@@ -1,0 +1,84 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygenindex xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="index.xsd" version="1.8.17">
+  <compound refid="namespaceconf" kind="namespace"><name>conf</name>
+    <member refid="namespaceconf_1a332f430461432dc465213f884a1e4967" kind="variable"><name>shell</name></member>
+    <member refid="namespaceconf_1a45653c983098153b78e33600e39230eb" kind="variable"><name>project</name></member>
+    <member refid="namespaceconf_1a33fa97cf51dcb25970fbf53f10159589" kind="variable"><name>copyright</name></member>
+    <member refid="namespaceconf_1a637c239d256432248aa8d9f3ab0b8c52" kind="variable"><name>author</name></member>
+    <member refid="namespaceconf_1a325dc746d8bf05c54d26351c35a21d90" kind="variable"><name>release</name></member>
+    <member refid="namespaceconf_1ae475e080536acb271a0a0efe56c3ba42" kind="variable"><name>extensions</name></member>
+    <member refid="namespaceconf_1ae850ae634911b713e036b43894fdd525" kind="variable"><name>templates_path</name></member>
+    <member refid="namespaceconf_1a7ad48fb6f3e9b129c02346ea0d3527c1" kind="variable"><name>exclude_patterns</name></member>
+    <member refid="namespaceconf_1a3117edf4443d9b8c70a9f0f44294ba79" kind="variable"><name>highlight_language</name></member>
+    <member refid="namespaceconf_1a10af2a769eb3bd3322e874f677e435b1" kind="variable"><name>source_suffix</name></member>
+    <member refid="namespaceconf_1a6fcd7e5236f355b1e1a55f9d95988810" kind="variable"><name>master_doc</name></member>
+    <member refid="namespaceconf_1a6c3bfcc1a44546c1c75ce20f55bd0fd6" kind="variable"><name>html_theme</name></member>
+    <member refid="namespaceconf_1af4fb5d8851ccaade135c2668dd3ced41" kind="variable"><name>html_static_path</name></member>
+    <member refid="namespaceconf_1a8375f4f963de3ac8026eaa9beced9564" kind="variable"><name>intersphinx_mapping</name></member>
+    <member refid="namespaceconf_1acb47d2c0c2904fa7d36b63142533f383" kind="variable"><name>breathe_projects</name></member>
+    <member refid="namespaceconf_1a6eba2d2c7ae923054b1c49e686ec89b9" kind="variable"><name>breathe_default_project</name></member>
+  </compound>
+  <compound refid="namespacego__to__point" kind="namespace"><name>go_to_point</name>
+    <member refid="namespacego__to__point_1a91dbaab25e6080f6b5dbf82cac6ce75c" kind="variable"><name>position_</name></member>
+    <member refid="namespacego__to__point_1ae444f19eb2019982432760ace036ce03" kind="variable"><name>yaw_</name></member>
+    <member refid="namespacego__to__point_1acafa50d4a3b16d8605fa03a28b48e828" kind="variable"><name>pose_</name></member>
+    <member refid="namespacego__to__point_1aa2d0ef255bcf5d5faf9ca2764730fb17" kind="variable"><name>state_</name></member>
+    <member refid="namespacego__to__point_1a57b4090d0abcbcf0bfa2bcb9329d3036" kind="variable"><name>pub_</name></member>
+    <member refid="namespacego__to__point_1a67f95834f0959feb3facd17bc7fa2b38" kind="variable"><name>yaw_precision_</name></member>
+    <member refid="namespacego__to__point_1af74ccf49164d0478ca8343e2031d5813" kind="variable"><name>yaw_precision_2_</name></member>
+    <member refid="namespacego__to__point_1a6a1e4eb20ebd4fce0fc56b0ebfd7a8d5" kind="variable"><name>dist_precision_</name></member>
+    <member refid="namespacego__to__point_1a524106fc7667a0927951dfd89d52d6a7" kind="variable"><name>kp_a</name></member>
+    <member refid="namespacego__to__point_1a7bc498652ca66932e704e738b50c297b" kind="variable"><name>kp_d</name></member>
+    <member refid="namespacego__to__point_1acb4e14986fafe5cb73bb8ad0c178869d" kind="variable"><name>ub_a</name></member>
+    <member refid="namespacego__to__point_1afecad4058844db05d8321199e25b4498" kind="variable"><name>lb_a</name></member>
+    <member refid="namespacego__to__point_1a16c473b9e717200c483d18e66b48152a" kind="variable"><name>ub_d</name></member>
+    <member refid="namespacego__to__point_1a3caa5a6c1e8d7b4854f62a9e35dfad6f" kind="variable"><name>pub</name></member>
+    <member refid="namespacego__to__point_1a64583fad586a7212c40613ec1c3e7c69" kind="variable"><name>act_s</name></member>
+    <member refid="namespacego__to__point_1a36304a9f313b0579f7fc69fa01695524" kind="function"><name>clbk_odom</name></member>
+    <member refid="namespacego__to__point_1a31ee48e5cae36821049b572a96b7c8be" kind="function"><name>change_state</name></member>
+    <member refid="namespacego__to__point_1ac688bb56fa84763ea2edefc30cae032a" kind="function"><name>normalize_angle</name></member>
+    <member refid="namespacego__to__point_1a9c3011a3065fcbefcc1c5ad8c9979669" kind="function"><name>fix_yaw</name></member>
+    <member refid="namespacego__to__point_1ac8579665c0fbf665f734476554fac37d" kind="function"><name>go_straight_ahead</name></member>
+    <member refid="namespacego__to__point_1a4a406386ca62830c19c93949e923f7bd" kind="function"><name>fix_final_yaw</name></member>
+    <member refid="namespacego__to__point_1ac2587220a4ac9c845bc9c5b0b45d5835" kind="function"><name>done</name></member>
+    <member refid="namespacego__to__point_1a2203d17b7e563bee20ed4c988548df45" kind="function"><name>go_to_point</name></member>
+    <member refid="namespacego__to__point_1ab92bd6db1ec323a4d795ed6cb40aebe1" kind="function"><name>main</name></member>
+  </compound>
+  <compound refid="namespaceuser__interface" kind="namespace"><name>user_interface</name>
+    <member refid="namespaceuser__interface_1ac26bdb296b6776907b72c17ce5a1b24a" kind="function"><name>main</name></member>
+  </compound>
+  <compound refid="_c_make_lists_8txt" kind="file"><name>CMakeLists.txt</name>
+  </compound>
+  <compound refid="conf_8py" kind="file"><name>conf.py</name>
+  </compound>
+  <compound refid="_r_e_a_d_m_e_8md" kind="file"><name>README.md</name>
+  </compound>
+  <compound refid="go__to__point_8py" kind="file"><name>go_to_point.py</name>
+  </compound>
+  <compound refid="user__interface_8py" kind="file"><name>user_interface.py</name>
+  </compound>
+  <compound refid="position__service_8cpp" kind="file"><name>position_service.cpp</name>
+    <member refid="position__service_8cpp_1a10f83119b77a8fbd085a5550955f85ff" kind="function"><name>randMToN</name></member>
+    <member refid="position__service_8cpp_1ab65b9ff5368189ad34fe4989d50742e4" kind="function"><name>myrandom</name></member>
+    <member refid="position__service_8cpp_1a3c04138a5bfe5d72780bb7e82a18e627" kind="function"><name>main</name></member>
+  </compound>
+  <compound refid="state__machine_8cpp" kind="file"><name>state_machine.cpp</name>
+    <member refid="state__machine_8cpp_1ab376b87f96a574a793c03c53e75afec8" kind="variable"><name>start</name></member>
+    <member refid="state__machine_8cpp_1a1ea5d0cb93f22f7d0fdf804bd68c3326" kind="variable"><name>mode</name></member>
+    <member refid="state__machine_8cpp_1ab39023cc3fb91acce5cea14fed60c578" kind="variable"><name>goal_number</name></member>
+    <member refid="state__machine_8cpp_1a8d20fb8e6683e64330d956c0e418bdc8" kind="variable"><name>cancel_number</name></member>
+    <member refid="state__machine_8cpp_1a00b0c9b1c3ea8bb73a7fc8b53a3961fd" kind="variable"><name>start_time</name></member>
+    <member refid="state__machine_8cpp_1a48730b83f4e94cd041eff56c72a685e8" kind="variable"><name>reached_time</name></member>
+    <member refid="state__machine_8cpp_1a1a9543636935547580c0657f4c7c0c2b" kind="function"><name>user_interface</name></member>
+    <member refid="state__machine_8cpp_1a27c5ee4b21889d5be303f7b9c478650b" kind="function"><name>doneCllbck</name></member>
+    <member refid="state__machine_8cpp_1aba3037dad63055ba964aa37d23945167" kind="function"><name>activeCllbck</name></member>
+    <member refid="state__machine_8cpp_1a186744df3fa990df2df16b1410905822" kind="function"><name>feedbackCllbck</name></member>
+    <member refid="state__machine_8cpp_1a3c04138a5bfe5d72780bb7e82a18e627" kind="function"><name>main</name></member>
+  </compound>
+  <compound refid="md__r_e_a_d_m_e" kind="page"><name>md_README</name>
+  </compound>
+  <compound refid="dir_53e6fa9553ac22a5646d2a2b2d7b97a1" kind="dir"><name>scripts</name>
+  </compound>
+  <compound refid="dir_68267d1309a1af8e8297ef4c3efbcdba" kind="dir"><name>src</name>
+  </compound>
+</doxygenindex>

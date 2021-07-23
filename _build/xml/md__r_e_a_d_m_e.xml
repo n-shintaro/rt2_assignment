@@ -1,0 +1,270 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.17">
+  <compounddef id="md__r_e_a_d_m_e" kind="page">
+    <compoundname>md_README</compoundname>
+    <title>Research Track 2 - first assignment</title>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<sect1 id="md__r_e_a_d_m_e_1autotoc_md1">
+<title>OverView</title>
+<sect2 id="md__r_e_a_d_m_e_1autotoc_md2">
+<title>the robot movement</title>
+<para><itemizedlist>
+<listitem><para>the robot moves to the random position when user demand the robot to move.<itemizedlist>
+<listitem><para>when the user type 1 in the shell, the robot starts to move</para>
+</listitem><listitem><para>when the user type 0 in the shell, the robot try to stop (in the action branch, the robot stops immediately. Otherwise, the robot can be stopped only when it reaches a target)</para>
+</listitem></itemizedlist>
+</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="md__r_e_a_d_m_e_1autotoc_md3">
+<title>nodes</title>
+<para>There are four main nodes</para>
+<para><itemizedlist>
+<listitem><para>GotoPoint node<itemizedlist>
+<listitem><para>drive the robot towards the random position in space (x,y) and with a certain angle (theta)</para>
+</listitem></itemizedlist>
+</para>
+</listitem><listitem><para>User interface node<itemizedlist>
+<listitem><para>receive the user request</para>
+</listitem><listitem><para>ask the state_machine to send the command to the robot</para>
+</listitem></itemizedlist>
+</para>
+</listitem><listitem><para>Position server node<itemizedlist>
+<listitem><para>reply with random values for x, y, and theta, where x and y should be limited between some min and max values</para>
+</listitem></itemizedlist>
+</para>
+</listitem><listitem><para>State machine node<itemizedlist>
+<listitem><para>give the possibility to start or stop the robot behaviour when the user requests</para>
+</listitem></itemizedlist>
+</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="md__r_e_a_d_m_e_1autotoc_md4">
+<title>Requirements of assignment</title>
+<sect3 id="md__r_e_a_d_m_e_1autotoc_md5">
+<title>Q1) Action branch</title>
+<para><itemizedlist>
+<listitem><para>state machine node should now implement mechanisms for possibly canceling the goal, when user type stop (0) command in the shell</para>
+</listitem></itemizedlist>
+</para>
+</sect3>
+<sect3 id="md__r_e_a_d_m_e_1autotoc_md6">
+<title>Q2) ROS2 branch</title>
+<para><itemizedlist>
+<listitem><para>cpp nodes are written for ROS as components</para>
+</listitem><listitem><para>by using the ros1_bridge, they can be interfaces with the ROS nodes and with simulation in Gazebo.</para>
+</listitem></itemizedlist>
+</para>
+</sect3>
+<sect3 id="md__r_e_a_d_m_e_1autotoc_md7">
+<title>Q3) Main branch</title>
+<para><itemizedlist>
+<listitem><para>use Vrep in stead of Gazebo</para>
+</listitem><listitem><para>Vrep communicate with ROS (not ROS2)</para>
+</listitem></itemizedlist>
+</para>
+</sect3>
+</sect2>
+<sect2 id="md__r_e_a_d_m_e_1autotoc_md8">
+<title>Description of the content of the package</title>
+<para><itemizedlist>
+<listitem><para><ref refid="go__to__point_8py" kindref="compound">go_to_point.py</ref><itemizedlist>
+<listitem><para>receive the goal position (/go_to_point)</para>
+</listitem><listitem><para>control the velocity depending on the position</para>
+</listitem><listitem><para>send the velocity (/cmd_vel)</para>
+</listitem></itemizedlist>
+</para>
+</listitem><listitem><para><ref refid="user__interface_8py" kindref="compound">user_interface.py</ref><itemizedlist>
+<listitem><para>user interface (command line)</para>
+</listitem><listitem><para>when the user put &quot;start&quot;, the robot starts to move</para>
+</listitem><listitem><para>when the user put &quot;stop&quot;, the robot stops</para>
+</listitem></itemizedlist>
+</para>
+</listitem><listitem><para><ref refid="position__service_8cpp" kindref="compound">position_service.cpp</ref><itemizedlist>
+<listitem><para>when service is received from state machine, it returns the random position</para>
+</listitem></itemizedlist>
+</para>
+</listitem><listitem><para><ref refid="state__machine_8cpp" kindref="compound">state_machine.cpp</ref><itemizedlist>
+<listitem><para>when service is recived from user interface, it sends the service to position_service.</para>
+</listitem><listitem><para>it sends the random position as the goal to <ref refid="namespacego__to__point" kindref="compound">go_to_point</ref></para>
+</listitem></itemizedlist>
+</para>
+</listitem></itemizedlist>
+</para>
+<sect3 id="md__r_e_a_d_m_e_1autotoc_md9">
+<title>Topic</title>
+<para><itemizedlist>
+<listitem><para>/cmd_vel<itemizedlist>
+<listitem><para>Type: gemetry_msgs/Twist</para>
+</listitem><listitem><para>Publisher Node: /go_to_point</para>
+</listitem><listitem><para>Subscriber Node: /gazebo or /vrep</para>
+</listitem></itemizedlist>
+</para>
+</listitem><listitem><para>/odom<itemizedlist>
+<listitem><para>Type: nav_msgs/Odometry</para>
+</listitem><listitem><para>Publisher Node: /gazebo or /vrep</para>
+</listitem><listitem><para>Subscriber Node: /go_to_point</para>
+</listitem></itemizedlist>
+</para>
+</listitem></itemizedlist>
+</para>
+</sect3>
+<sect3 id="md__r_e_a_d_m_e_1autotoc_md10">
+<title>Service</title>
+<para><itemizedlist>
+<listitem><para>/go_to_point<itemizedlist>
+<listitem><para>Client Node: <ref refid="namespacego__to__point" kindref="compound">go_to_point</ref></para>
+</listitem><listitem><para>Server Node: state_machine</para>
+</listitem><listitem><para>Type : Position</para>
+</listitem></itemizedlist>
+</para>
+</listitem><listitem><para>/position_server<itemizedlist>
+<listitem><para>Client Node: state_machine</para>
+</listitem><listitem><para>Server Node: random_position_server</para>
+</listitem><listitem><para>Type: RandomPosition</para>
+</listitem></itemizedlist>
+</para>
+</listitem><listitem><para>/user_interface<itemizedlist>
+<listitem><para>Client Node: <ref refid="namespaceuser__interface" kindref="compound">user_interface</ref></para>
+</listitem><listitem><para>Server Node: state_machine</para>
+</listitem><listitem><para>Type : Command</para>
+</listitem></itemizedlist>
+</para>
+</listitem></itemizedlist>
+</para>
+</sect3>
+<sect3 id="md__r_e_a_d_m_e_1autotoc_md11">
+<title>custom service</title>
+<para><itemizedlist>
+<listitem><para>rt2_assignment1/RandomPosition<itemizedlist>
+<listitem><para>request</para>
+</listitem></itemizedlist>
+</para>
+</listitem><listitem><para>float32 x_max<itemizedlist>
+<listitem><para>float32 x_min</para>
+</listitem><listitem><para>float32 y_max</para>
+</listitem><listitem><para>float32 y_min</para>
+</listitem></itemizedlist>
+</para>
+</listitem></itemizedlist>
+</para>
+<para>response<itemizedlist>
+<listitem><para>float32 x<itemizedlist>
+<listitem><para>float32 y</para>
+</listitem><listitem><para>float32 theta</para>
+</listitem></itemizedlist>
+</para>
+</listitem></itemizedlist>
+</para>
+<para>rt2_assignment1/Position<itemizedlist>
+<listitem><para>request<itemizedlist>
+<listitem><para>float32 x</para>
+</listitem><listitem><para>float32 y</para>
+</listitem><listitem><para>float32 theta</para>
+</listitem></itemizedlist>
+</para>
+</listitem></itemizedlist>
+</para>
+<para>response<itemizedlist>
+<listitem><para>bool ok</para>
+</listitem></itemizedlist>
+</para>
+<para>rt2_assignment1/Position<itemizedlist>
+<listitem><para>request<itemizedlist>
+<listitem><para>string command</para>
+</listitem></itemizedlist>
+</para>
+</listitem><listitem><para>response<itemizedlist>
+<listitem><para>bool ok</para>
+</listitem></itemizedlist>
+</para>
+</listitem></itemizedlist>
+</para>
+</sect3>
+</sect2>
+</sect1>
+<sect1 id="md__r_e_a_d_m_e_1autotoc_md12">
+<title>Q1) Action branch</title>
+<para>please look at <ulink url="https://github.com/n-shintaro/rt2_assignment1/tree/action">Readme of action branch</ulink></para>
+</sect1>
+<sect1 id="md__r_e_a_d_m_e_1autotoc_md13">
+<title>Q2) ROS2 branch</title>
+<para>please look at <ulink url="https://github.com/n-shintaro/rt2_assignment1/tree/ros2">Readme of action branch</ulink></para>
+</sect1>
+<sect1 id="md__r_e_a_d_m_e_1autotoc_md14">
+<title>Q3) main branch</title>
+<sect2 id="md__r_e_a_d_m_e_1autotoc_md15">
+<title>Dependencies</title>
+<para>This software is built on the Robotic Operating System ([ROS]), which needs to be install first and create the workspace.</para>
+<para><itemizedlist>
+<listitem><para>Ubuntu 20.04</para>
+</listitem><listitem><para>ROS noetic</para>
+</listitem><listitem><para>CoppeliaSim V 4.2.0</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="md__r_e_a_d_m_e_1autotoc_md16">
+<title>Setting of CoppeliaSim</title>
+<sect3 id="md__r_e_a_d_m_e_1autotoc_md17">
+<title>download &lt;a href=&quot;http://www.coppeliarobotics.com/downloads.html&quot;&gt;here&lt;/a&gt;</title>
+</sect3>
+<sect3 id="md__r_e_a_d_m_e_1autotoc_md18">
+<title>ROS integration</title>
+<para>Vrep should be already6 integrated with ROS. You just need to launch the ROS master before running the V-REP (CoppeliaSim) software.</para>
+<para>If there is any problem in building the plugin, you will need to recompile it by yourself: you can download it from here</para>
+<para><programlisting><codeline><highlight class="normal">#<sp/>install<sp/>xsltproc</highlight></codeline>
+<codeline><highlight class="normal">Run<sp/>apt-get<sp/>install<sp/>xsltproc</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">#<sp/>install<sp/>xmlschema</highlight></codeline>
+<codeline><highlight class="normal">pip3<sp/>install<sp/>xmlschema</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">git<sp/>clone<sp/>https://github.com/CoppeliaRobotics/simExtROS.git</highlight></codeline>
+</programlisting></para>
+<para>In order to build the packages, navigate to the catkin_ws folder and type:</para>
+<para><programlisting><codeline><highlight class="normal">###<sp/>it<sp/>is<sp/>better<sp/>to<sp/>write<sp/>it<sp/>in<sp/>.bashrc</highlight></codeline>
+<codeline><highlight class="normal">export<sp/>COPPELIASIM_ROOT_DIR=~/path/to/coppeliaSim/folder</highlight></codeline>
+<codeline><highlight class="normal">catkin_make<sp/>--cmake-args<sp/>-DCMAKE_BUILD_TYPE=Release</highlight></codeline>
+</programlisting></para>
+<para>Vrep should be executed when the ROS master is already running</para>
+<para><programlisting><codeline><highlight class="normal">roscore</highlight></codeline>
+</programlisting></para>
+<para><programlisting><codeline><highlight class="normal">cd<sp/>/install<sp/>folder<sp/>of<sp/>Coppeliasim</highlight></codeline>
+<codeline><highlight class="normal">./coppeliasim.sh</highlight></codeline>
+</programlisting></para>
+<para>Copy the devel/lib/libsimExtROS.so file to the CoppeliaSim installation folder.</para>
+</sect3>
+</sect2>
+<sect2 id="md__r_e_a_d_m_e_1autotoc_md19">
+<title>Compiling and Running</title>
+<sect3 id="md__r_e_a_d_m_e_1autotoc_md20">
+<title>first terminal</title>
+<para>Build catkin_workspace</para>
+<para><programlisting><codeline><highlight class="normal">cd<sp/>cakin_workspace</highlight></codeline>
+<codeline><highlight class="normal">catkin_make</highlight></codeline>
+<codeline><highlight class="normal">roscore</highlight></codeline>
+</programlisting></para>
+</sect3>
+<sect3 id="md__r_e_a_d_m_e_1autotoc_md21">
+<title>second terminal</title>
+<para>start CoppeliaSim</para>
+<para><programlisting><codeline><highlight class="normal">cd<sp/>/install<sp/>folder<sp/>of<sp/>Coppeliasim</highlight></codeline>
+<codeline><highlight class="normal">./coppeliasim.sh</highlight></codeline>
+</programlisting></para>
+<para>file-&gt;open scene-&gt;go to the vrep folder of rt2_assignment package-&gt; pioneerROS_rt2.ttt</para>
+<para>and run the simulator</para>
+</sect3>
+<sect3 id="md__r_e_a_d_m_e_1autotoc_md22">
+<title>third terminal</title>
+<para>launch all the nodes without gazebo simulator</para>
+<para><programlisting><codeline><highlight class="normal">roslaunch<sp/>rt2_assignment1<sp/>sim_vrep.launch</highlight></codeline>
+</programlisting> </para>
+</sect3>
+</sect2>
+</sect1>
+    </detaileddescription>
+  </compounddef>
+</doxygen>
