@@ -1,4 +1,7 @@
-# Research Track 2 - first assignment
+# Research Track 2 - first assignment 
+## Document
+https://n-shintaro.github.io/rt2_assignment1/
+
 ## OverView
 
 ### the robot movement
