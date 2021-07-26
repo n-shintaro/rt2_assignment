@@ -91,6 +91,7 @@ def go_straight_ahead(des_pos):
     err_yaw = normalize_angle(desired_yaw - yaw_)
     rospy.loginfo(err_yaw)
 
+    # whether distance from the goal is under the threshold
     if err_pos > dist_precision_:
         twist_msg = Twist()
         twist_msg.linear.x = 0.3
@@ -101,11 +102,14 @@ def go_straight_ahead(des_pos):
         pub_.publish(twist_msg)
     else: # state change conditions
         #print ('Position error: [%s]' % err_pos)
+        
+        # fix the final state
         change_state(2)
 
     # state change conditions
     if math.fabs(err_yaw) > yaw_precision_:
         #print ('Yaw error: [%s]' % err_yaw)
+        #Fixing the yaw
         change_state(0)
 
 def fix_final_yaw(des_yaw):
@@ -122,14 +126,17 @@ def fix_final_yaw(des_yaw):
     # state change conditions
     if math.fabs(err_yaw) <= yaw_precision_2_:
         #print ('Yaw error: [%s]' % err_yaw)
+        # "Target reached!"
         change_state(3)
-        
+
+# set the velocity 0    
 def done():
     twist_msg = Twist()
     twist_msg.linear.x = 0
     twist_msg.angular.z = 0
     pub_.publish(twist_msg)
-    
+
+
 def go_to_point(goal):
     global act_s
     desired_position = Point()
