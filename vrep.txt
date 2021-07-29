@@ -1,0 +1,78 @@
+-- callback function to caculate the velocity
+function callback(msg)
+    v=msg.linear.x
+    w=-msg.angular.z
+    
+    -- Turning radius
+    raduis=0.2
+    -- caculate the velocity of wheel (in the case of two-wheeled robot)
+    rho=v/w
+
+    vLeft=v-w*d/2/raduis
+    vRight=v+w*d/2/raduis
+    
+end
+    
+function sysCall_init() 
+    robot=sim.getObjectHandle(sim.handle_self)
+    motorLeft=sim.getObjectHandle("Pioneer_p3dx_leftMotor")
+    vLeft=0 --left wheel velocity of the robot
+    motorRight=sim.getObjectHandle("Pioneer_p3dx_rightMotor")
+    vRight=0 --right wheel velocity of the robot
+    
+    wheelLeft=sim.getObjectHandle("Pioneer_p3dx_leftWheel")
+    wheelRight=sim.getObjectHandle("Pioneer_p3dx_rightWheel")
+    -- the position of wheel
+    leftPos=sim.getObjectPosition(wheelLeft,robot)
+    rightPos=sim.getObjectPosition(wheelRight,robot)
+    -- width of the robot
+    d=math.sqrt((leftPos[1]-rightPos[1])^2+(leftPos[2]-rightPos[2])^2+(leftPos[3]-rightPos[3])^2)
+    
+    rosInterfacePresent=simROS
+    
+    if rosInterfacePresent then
+        -- publiusher of odom
+        odom_publisher=simROS.advertise('/odom','nav_msgs/Odometry')
+        -- subscriber of cmd_vel
+        cmd_vel_subscriber=simROS.subscribe('/cmd_vel','geometry_msgs/Twist','callback')
+        
+    end
+end
+-- This is a very simple EXAMPLE navigation program
+
+
+function sysCall_cleanup() 
+    if rosInterfacePresent then
+        simROS.shutdownPublisher(odom_publisher)
+        simROS.shutdownSubscriber(cmd_vel_subscriber)
+    end
+end 
+
+function sysCall_actuation() 
+    --set the velocity 
+    sim.setJointTargetVelocity(motorLeft,vLeft)
+    sim.setJointTargetVelocity(motorRight,vRight)
+    
+    --get the position and quaternion of the robot
+    pos = sim.getObjectPosition(robot,-1)
+    quat = sim.getObjectQuaternion(robot,-1)
+    
+    -- publish the odom
+    odom={}
+    odom.header={}
+    odom.header.frame_id='odom'
+    --odom.header.child_frame_id='base_link'
+    odom.pose={}
+    odom.pose.pose={}
+    odom.pose.pose.position={}
+    odom.pose.pose.position.x=pos[1]
+    odom.pose.pose.position.y=pos[2]
+    odom.pose.pose.position.z=0.0
+    odom.pose.pose.orientation={}
+    odom.pose.pose.orientation.x=quat[1]
+    odom.pose.pose.orientation.y=quat[2]
+    odom.pose.pose.orientation.z=quat[3]
+    odom.pose.pose.orientation.w=quat[4]
+    simROS.publish(odom_publisher,odom)
+    
+end 
